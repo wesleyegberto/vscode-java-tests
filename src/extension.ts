@@ -32,14 +32,19 @@ async function createTestClass() {
 
 	try {
 		await vscode.workspace.fs.stat(testFileUri);
-		vscode.window.showTextDocument(testFileUri, { viewColumn: vscode.ViewColumn.Beside });
+		showTestFile(testFileUri);
 
 	} catch {
 		const fileContent = generateTestClassFileContent(javaFileUri, javaClassName, testFileUri, testClassName);
 		await vscode.workspace.fs.writeFile(testFileUri, fileContent);
 
-		vscode.window.showTextDocument(testFileUri, { viewColumn: vscode.ViewColumn.Beside });
+		showTestFile(testFileUri);
 	}
+}
+
+function showTestFile(testFileUri: vscode.Uri) {
+  // TODO: extract configuration to define where to open it: beside (new editor group) or current editor group
+  vscode.window.showTextDocument(testFileUri, { viewColumn: vscode.ViewColumn.Beside });
 }
 
 function getTestFileUri(javaFileUri: vscode.Uri, testClassName: string) {

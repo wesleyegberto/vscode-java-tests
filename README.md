@@ -12,7 +12,8 @@ Extension to help write Java tests.
 
 ### Create Test File
 
-Generate a test class in the folder `src/test/java` with code to construct the source class, if already there is a test class then it will be open.
+Generate a test class in the folder `src/test/java` with code to construct the source class, if already there is a test
+class then it will be opened.
 
 Example:
 
@@ -20,9 +21,6 @@ Given the file `/src/main/java/com/github/sample/MessageService.java`:
 
 ```java
 package com.github.sample;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MessageService {
 	public String getMessage() {
@@ -63,8 +61,9 @@ public class MessageServiceTest {
 
 ## Todos
 
-- [ ] Create tests
+- [ ] Create tests for the extension
 - [ ] Generate a test case for each method
+- [ ] Command to create the target class in `src/main/java` when doing TDD
 
 ## Links
 
