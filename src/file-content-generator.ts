@@ -41,7 +41,7 @@ public class ${testClassName} {
 function generateTestClassPackageDeclaration(testFileUri: vscode.Uri, testClassName: string) {
   const packageName = extractPackageName(testFileUri, testClassName, true);
   if (!packageName.length) {
-	  return '';
+    return '';
   }
   return `package ${packageName};`;
 }
@@ -49,17 +49,17 @@ function generateTestClassPackageDeclaration(testFileUri: vscode.Uri, testClassN
 function generateTargetTestClassPackageImport(javaFileUri: vscode.Uri, javaClassName: string) {
   const packageName = extractPackageName(javaFileUri, javaClassName, false);
   if (!packageName.length) {
-	  return '';
+    return '';
   }
   return `import ${packageName}.${javaClassName};`;
 }
 
 function extractPackageName(fileUri: vscode.Uri, fileClassName: string, isTest: boolean): string {
-	const pathPrefix = isTest ? '/src/test/java' : '/src/main/java';
-	const startIndex = fileUri.fsPath.indexOf(pathPrefix) + 15; // '/src/test/java/'.length
-	const endIndex = fileUri.fsPath.indexOf(fileClassName) - 1;
-	if (startIndex >= endIndex) {
-		return '';
-	}
-	return fileUri.fsPath.substring(startIndex, endIndex).replace(/\//g, '.');
+  const pathPrefix = isTest ? '/src/test/java' : '/src/main/java';
+  const startIndex = fileUri.fsPath.indexOf(pathPrefix) + 15; // '/src/test/java/'.length
+  const endIndex = fileUri.fsPath.indexOf(fileClassName) - 1;
+  if (startIndex >= endIndex) {
+    return '';
+  }
+  return fileUri.fsPath.substring(startIndex, endIndex).replace(/\//g, '.');
 }

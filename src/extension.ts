@@ -4,52 +4,63 @@ import { posix } from 'path';
 import { generateTestClassFileContent } from './file-content-generator';
 
 export function activate(context: vscode.ExtensionContext) {
-	let disposable = vscode.commands.registerCommand('vscode-java-tests.createTestClass', createTestClass);
+  console.debug('Java Tests - Extension loaded');
 
-	context.subscriptions.push(disposable);
+  context.subscriptions.push(
+    vscode.commands.registerCommand('java.tests.createTestClass', createTestClass)
+  );
 }
 
 export function deactivate() {}
 
-async function createTestClass() {
-	const activeEditor = vscode.window.activeTextEditor;
+async function createTestClass(args: any) {
+  let javaFileUri: vscode.Uri;
 
-	if (!activeEditor) {
-		vscode.window.showWarningMessage("Please, open a Java file.");
-		return;
-	}
+  if (args && args.scheme === 'file' && args.path) {
+    javaFileUri = args as vscode.Uri;
 
-	if (!activeEditor.document.fileName.endsWith('.java')) {
-		vscode.window.showWarningMessage('Only allowed to create test from a Java file');
-		return;
-	}
+  } else {
+    const activeEditor = vscode.window.activeTextEditor;
 
-	const javaFileUri = activeEditor.document.uri;
-	const javaClassName = posix.basename(javaFileUri.path, '.java');
+    if (!activeEditor) {
+      vscode.window.showWarningMessage('Please, open a Java file.');
+      return;
+    }
 
-	const testClassName = `${javaClassName}Test`;
-	const testFileUri = getTestFileUri(javaFileUri, testClassName);
+    javaFileUri = activeEditor.document.uri;
+  }
 
-	try {
-		await vscode.workspace.fs.stat(testFileUri);
-		showTestFile(testFileUri);
+  if (!javaFileUri || !javaFileUri.path.endsWith('.java')) {
+    vscode.window.showWarningMessage('Only allowed to create test from a Java file');
+    return;
+  }
 
-	} catch {
-		const fileContent = generateTestClassFileContent(javaFileUri, javaClassName, testFileUri, testClassName);
-		await vscode.workspace.fs.writeFile(testFileUri, fileContent);
+  const javaClassName = posix.basename(javaFileUri.path, '.java');
 
-		showTestFile(testFileUri);
-	}
+  const testClassName = `${javaClassName}Test`;
+  const testFileUri = getTestFileUri(javaFileUri, testClassName);
+
+  try {
+    await vscode.workspace.fs.stat(testFileUri);
+    showTestFile(testFileUri);
+  } catch {
+    const fileContent = generateTestClassFileContent(javaFileUri, javaClassName, testFileUri, testClassName);
+    await vscode.workspace.fs.writeFile(testFileUri, fileContent);
+
+    showTestFile(testFileUri);
+  }
 }
 
 function showTestFile(testFileUri: vscode.Uri) {
-  // TODO: extract configuration to define where to open it: beside (new editor group) or current editor group
-  vscode.window.showTextDocument(testFileUri, { viewColumn: vscode.ViewColumn.Beside });
+  const config = vscode.workspace.getConfiguration('javaTests');
+  const configOpenLocationValue = config.get('file.openLocation', 'beside');
+  vscode.window.showTextDocument(testFileUri, {
+    viewColumn: configOpenLocationValue === 'beside' ? vscode.ViewColumn.Beside : vscode.ViewColumn.Active
+  });
 }
 
 function getTestFileUri(javaFileUri: vscode.Uri, testClassName: string) {
-	const testPath = javaFileUri.path.replace('/src/main/java', '/src/test/java');
-	const testFilePath = posix.join(testPath, '..', `${testClassName}.java`);
-	return javaFileUri.with({ path: testFilePath });
+  const testPath = javaFileUri.path.replace('/src/main/java', '/src/test/java');
+  const testFilePath = posix.join(testPath, '..', `${testClassName}.java`);
+  return javaFileUri.with({ path: testFilePath });
 }
-
