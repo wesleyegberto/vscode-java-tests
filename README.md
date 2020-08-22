@@ -6,7 +6,7 @@ Extension to help write Java tests.
 
 | Command | Action | Description |
 | - | - | - |
-| `vscode-java-tests.createTestClass` | `Create Test File` | Generate a test class |
+| `java.tests.createTestClass` | `Create/Open Test File` | Generate or open a test class |
 
 ## Actions
 
