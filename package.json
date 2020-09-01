@@ -1,8 +1,8 @@
 {
 	"name": "vscode-java-tests",
 	"publisher": "wesleyegberto",
-	"displayName": "VSCode Java Tests",
-	"description": "Extension to help write Java tests",
+	"displayName": "Java Tests",
+	"description": "Extension to help write tests in Java.",
 	"version": "0.1.0",
   "repository": {
     "type": "git",
