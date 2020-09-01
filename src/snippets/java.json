@@ -1,0 +1,130 @@
+{
+	"Imports for Tests": {
+		"prefix": "imports_test",
+		"body": [
+			"import static org.hamcrest.Matchers.*;",
+			"import static org.junit.Assert.assertEquals;",
+			"import static org.junit.Assert.assertThat;",
+			"import static org.mockito.Mockito.*;",
+			"import org.hamcrest.CoreMatchers;",
+			"import org.junit.After;",
+			"import org.junit.Before;",
+			"import org.junit.Test;",
+			"import org.mockito.ArgumentCaptor;"
+		],
+		"description": "Imports to write tests with Mockito and Hamcrest"
+	},
+	"Assert - is": {
+		"prefix": "test_is",
+		"body": [
+			"assertThat(${1:mockedService.executeMagic()}, is(${2:\"42\"}));"
+		],
+		"description": "assert that is"
+	},
+	"Assert - equals": {
+		"prefix": "test_equals",
+		"body": [
+			"assertEquals(${1:anObject}, ${2:anotherObject});"
+		],
+		"description": "assert equals"
+	},
+	"Assert - isOneOf": {
+		"prefix": "test_isOneOf",
+		"body": [
+			"assertThat(${1:\"Test\"}, isOneOf(${2:\"Test\", \"TDD\"}));"
+		],
+		"description": "assert that isOneOf"
+	},
+	"Assert - hasSize": {
+		"prefix": "test_hasSize",
+		"body": [
+			"assertThat(List.of(\"Test\", \"TDD\"), hasSize(2));"
+		],
+		"description": "assert that hasSize"
+	},
+	"Assert - hasItem": {
+		"prefix": "test_hasItem",
+		"body": [
+			"assertThat(${1:List.of(\"Test\", \"TDD\")}, hasItem(${2:\"Test\"}));"
+		],
+		"description": "assert that hasItem"
+	},
+	"Assert - hasItems": {
+		"prefix": "test_hasItems",
+		"body": [
+			"assertThat(${1:List.of(\"Test\", \"TDD\")}, hasItem(${2:List.of(\"Test\", \"TDD\")}));"
+		],
+		"description": "assert that hasItem"
+	},
+	"Assert - isIn": {
+		"prefix": "test_isIn",
+		"body": [
+			"assertThat(${1:\"test\"}, isIn(${2:List.of(\"test\", \"TDD\")}));"
+		],
+		"description": "assert that isIn"
+	},
+	"Mockito - Create mock": {
+		"prefix": "mock_class",
+		"body": [
+			"${1:MyService} ${2:mockedService} = mock(${1:MyService}.class);"
+		],
+		"description": "Create a mock object of a class"
+	},
+	"Mock - Method return": {
+		"prefix": "mock_method_return",
+		"body": [
+			"when(${1:mockedService.executeMagicWith(any())}).thenReturn(${2:\"42\"});"
+		],
+		"description": "Mock a method's return"
+	},
+	"Mock - Method throws": {
+		"prefix": "mock_method_throw",
+		"body": [
+			"when(${1:mockedService.executeMagic()}).thenThrow(new ${2:IllegalArgumentException()};"
+		],
+		"description": "Mock a method to throw exception"
+	},
+	"Mockito - Verify call": {
+		"prefix": "mock_verify_times",
+		"body": [
+			"verify(${1:mockedService}, times(${2:1})).${3:executeMagic()};"
+		],
+		"description": "Verify if a mocked method was called `n` times"
+	},
+	"Mockito - Verify never called": {
+		"prefix": "mock_verify_never",
+		"body": [
+			"verify(${1:mockedService}, never()).${2:executeMagic()};"
+		],
+		"description": "Verify if a mocked method was never called"
+	},
+	"Mock - Argument captor": {
+		"prefix": "mock_arg_capture",
+		"body": [
+			"ArgumentCaptor<${1:Object}> ${2:argCaptor} = ArgumentCaptor.forClass(${1:Object}.class);",
+			"verify(${3:mockedService}).executeMagicWith(${2:argCaptor}.capture());",
+			"${1:Object} ${4:actualArg} = ${2:argCaptor}.getValue();"
+		],
+		"description": "Capture an argument given to a mocked method"
+	},
+	"JUnit - Before each": {
+		"prefix": "test_before",
+		"body": [
+			"@Before",
+			"public void setup() {",
+			"\t${1}",
+			"}"
+		],
+		"description": "Create setup method with `@Before`"
+	},
+	"JUnit - After each": {
+		"prefix": "test_after",
+		"body": [
+			"@After",
+			"public void tearDown() {",
+			"\t${1}",
+			"}"
+		],
+		"description": "Create tear down method with `@After`"
+	}
+}

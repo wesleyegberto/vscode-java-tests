@@ -1,12 +1,40 @@
 # VSCode Java Tests
 
-Extension to help write Java tests.
+Extension to help write tests in Java using JUnit and Mockito.
+
+Features:
+
+* Generate or open a test class for a given class
+* Snippets to write tests
 
 ## How to Use
+
+### Commands
 
 | Command | Action | Description |
 | - | - | - |
 | `java.tests.createTestClass` | `Create/Open Test File` | Generate or open a test class |
+
+### Snippets
+
+| Prefix | Description |
+| - | - |
+| `imports_test` | Insert the imports for testing (Mockito, Hamcrast and JUnit) |
+| `test_before` | Create setup method with `@Before` |
+| `test_after` | Create tear down method with `@After` |
+| `test_is` | `assertThat` with `is` |
+| `test_equals` | `assertEquals` |
+| `test_isOneOf` | `assertThat` with `isOneOf` |
+| `test_hasSize` | `assertThat` with `hasSize` |
+| `test_hasItem` | `assertThat` with `hasItem` |
+| `test_hasItems` | `assertThat` with `hasItems` |
+| `test_isIn` | `assertThat` with `isIn` |
+| `mock_class` | Create a mock object of a class |
+| `mock_method_return` | Mock a method's return |
+| `mock_method_throw` | Mock a method to throw exception |
+| `mock_verify_times` | Verify if a mocked method was called `n` times |
+| `mock_verify_never` | Verify if a mocked method was never called |
+| `mock_arg_capture` | Capture an argument given to a mocked method using `ArgumentCaptor` |
 
 ## Actions
 
@@ -61,6 +89,7 @@ public class MessageServiceTest {
 
 ## Todos
 
+- [x] Snippets to test
 - [ ] Create tests for the extension
 - [ ] Generate a test case for each method
 - [ ] Command to create the target class in `src/main/java` when doing TDD
