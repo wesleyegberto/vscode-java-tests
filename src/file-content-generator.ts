@@ -11,12 +11,15 @@ export function generateTestClassFileContent(
 
   const fileContent = `${packageDeclaration}
 
-import static org.hamcrest.CoreMatchers.*;
-import org.hamcrest.CustomMatcher;
-import org.hamcrest.Matcher;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
+import org.hamcrest.CoreMatchers;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 ${packageImport}
 
