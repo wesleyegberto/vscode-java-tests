@@ -4,9 +4,15 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [0.2.0] - 2020-08-31
 
-- Initial release
+### Changed
+
+- Display name to `Java Tests`
+
+### Added
+
+- Snippets to write imports, assertions and mocks
 
 ## [0.1.0] - 2020-08-22
 
@@ -23,3 +29,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Generate a test class with code to construct the source class
+
+## [Unreleased]
+
+- Initial release
