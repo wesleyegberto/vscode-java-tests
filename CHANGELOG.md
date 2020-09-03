@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.1] - 2020-09-02
+
+### Changed
+
+- Moved snippets file to root
+
 ## [0.2.0] - 2020-08-31
 
 ### Changed
