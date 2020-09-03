@@ -4,8 +4,8 @@ Extension to help write tests in Java using JUnit and Mockito.
 
 Features:
 
-* Generate or open a test class for a given class
 * Snippets to write tests
+* Generate or open a test class for a given class
 
 ## How to Use
 
@@ -43,21 +43,66 @@ Features:
 Generate a test class in the folder `src/test/java` with code to construct the source class, if already there is a test
 class then it will be opened.
 
+Generate the test class with the following structure:
+
+* The types that are used by Java class is **NOT** imported by default (to be implemented)
+* Define the instance to test using its **first** non-private constructor
+* Define an attribute annotated with `@Mock` for each parameter from the **first** non-private constructor
+* Define a test case for each public method that is not a setter (start with `set` and has only one parameter)
+* Declare the variables to be passed as argument to the public method and to store the result, if needed
+
 Example:
 
-Given the file `/src/main/java/com/github/sample/MessageService.java`:
+Given the file `/src/main/java/com/github/sample/ObjectService.java`:
 
 ```java
 package com.github.sample;
 
-public class MessageService {
-	public String getMessage() {
-		return "Hello World!";
-	}
+import java.util.logging.Logger;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ObjectService {
+    private Logger logger;
+    private ObjectRepository repository;
+
+    private ObjectService(ObjectRepository repository) {
+        this.repository = repository;
+    }
+
+    ObjectService(Logger logger, ObjectRepository repository) {
+        this.logger = logger;
+        this.repository = repository;
+    }
+
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+
+    public void save(Object object) {
+        this.repository.save(object);
+    }
+
+    public Iterable<Object> fetchObjects() {
+        return this.repository.findAll();
+    }
+
+    public Object findById(long id) {
+        return this.repository.findById(id);
+    }
 }
+
+@Repository
+
+interface ObjectRepository extends CrudRepository<Object, Long> {
+}
+
 ```
 
-Generate the test file `/src/test/java/com/github/sample/MessageServiceTest.java`:
+Generate the test file `/src/test/java/com/github/sample/ObjectService.java`:
 
 ```java
 package com.github.sample;
@@ -71,30 +116,60 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 
-import com.github.sample.MessageService;
+public class ObjectServiceTest {
+    @Mock
+    private Logger logger; // Won't be imported at test class
+    @Mock
+    private ObjectRepository repository;
 
-public class MessageServiceTest {
-	private MessageService cut;
+    private ObjectService objectService;
 
-	@Before
-	public void setup() {
-		this.cut = new MessageService();
-	}
+    @Before
+    public void setup() {
+        this.objectService = new ObjectService(logger, repository);
+    }
 
-	@Test
-	public void shouldCompile() {
-		assertThat("Actual value", is("Expected value"));
-	}
+    @Test
+    public void shouldSave() {
+        // TODO: initialize args
+        Object object;
+
+        objectService.save(object);
+
+        // TODO: assert scenario
+    }
+
+    @Test
+    public void shouldFetchObjects() {
+        Iterable<Object> actualValue = objectService.fetchObjects();
+
+        // TODO: assert scenario
+    }
+
+    @Test
+    public void shouldFindById() {
+        // TODO: initialize args
+        long id;
+
+        Object actualValue = objectService.findById(id);
+
+        // TODO: assert scenario
+    }
 }
 ```
 
-## Todos
+## Roadmap
 
 - [x] Snippets to test
-- [ ] Create tests for the extension
-- [ ] Generate a test case for each method
+- [x] Generate a test case for each method
+- [ ] Create option to define if should mock the constructor's parameters
+- [ ] Create option to define if should create a test case for each method
+- [ ] Create option to ignore the static methods
+- [ ] Auto import the types used in arguments to constructor and methods
 - [ ] Command to create the target class in `src/main/java` when doing TDD
+- [ ] Create tests for the extension
 
 ## Links
 
