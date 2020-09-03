@@ -44,7 +44,7 @@ async function createTestClass(args: any) {
     await vscode.workspace.fs.stat(testFileUri);
     showTestFile(testFileUri);
   } catch {
-    const fileContent = generateTestClassFileContent(javaFileUri, javaClassName, testFileUri, testClassName);
+    const fileContent = await generateTestClassFileContent(javaFileUri, javaClassName, testFileUri, testClassName);
     await vscode.workspace.fs.writeFile(testFileUri, fileContent);
 
     showTestFile(testFileUri);
