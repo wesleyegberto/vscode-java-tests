@@ -4,11 +4,16 @@ import { Parameter, Method, JavaClass } from './types';
 
 type TargetClassOrNull = Array<JavaClass> | null;
 
-export async function parseJavaClasses(javaFileUri: vscode.Uri): Promise<TargetClassOrNull> {
-  const javaSourceCode = await vscode.workspace.fs.readFile(javaFileUri);
+export async function parseJavaClassesFromFile(javaFileUri: vscode.Uri): Promise<TargetClassOrNull> {
+  const javaSourceCodeBuffer = await vscode.workspace.fs.readFile(javaFileUri);
+  const javaSourceCode = Buffer.from(javaSourceCodeBuffer).toString();
+  return parseJavaClassesFromSourceCode(javaSourceCode);
+}
+
+export async function parseJavaClassesFromSourceCode(javaSourceCode: string): Promise<TargetClassOrNull> {
   let parsedCode: ParseTree | null = null;
   try {
-    parsedCode = parse(Buffer.from(javaSourceCode).toString());
+    parsedCode = parse(javaSourceCode);
   } catch (error) {
     console.error(error);
     vscode.window.showErrorMessage('Error during file parsing, test class will be generated with only class name');

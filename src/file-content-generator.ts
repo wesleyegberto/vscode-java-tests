@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { parseJavaClasses } from './class-parser';
+import { parseJavaClassesFromFile } from './class-parser';
 import { JavaClass } from './types';
 
 export async function generateTestClassFileContent(
@@ -10,7 +10,7 @@ export async function generateTestClassFileContent(
 ) {
   const packageDeclaration = generateTestClassPackageDeclaration(testFileUri, testClassName);
 
-  const javaClasses = await parseJavaClasses(javaFileUri);
+  const javaClasses = await parseJavaClassesFromFile(javaFileUri);
   console.log(javaClasses);
 
   let fileContent = packageDeclaration + createDefaultImports();
@@ -35,7 +35,7 @@ export async function generateTestClassFileContent(
 function createTestClass(javaClass: JavaClass) {
   const varName = lowercaseFirstLetter(javaClass.className);
 
-  let testClassContent = `\n${javaClass.accessModifier}class ${javaClass.className}Test {\n`
+  let testClassContent = `\n${javaClass.accessModifier}class ${javaClass.className}Test {\n`;
 
   let constructorArgs = '';
   if (javaClass.constructorParameters && javaClass.constructorParameters.length > 0) {
