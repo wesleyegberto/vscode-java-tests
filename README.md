@@ -120,7 +120,7 @@ import org.mockito.Mock;
 
 public class ObjectServiceTest {
     @Mock
-    private Logger logger; // Won't be imported at test class
+    private Logger logger; // won't be imported automatically
     @Mock
     private ObjectRepository repository;
 

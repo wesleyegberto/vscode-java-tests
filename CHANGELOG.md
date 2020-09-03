@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.0] - 2020-09-03
+
+### Added
+
+- Added lib `java-ast` version 0.3.0
+- Generate the mocked arguments to constructor
+- Generate a test case for each public method
+- Declare variables used in test case (arguments and result)
+
 ## [0.2.1] - 2020-09-02
 
 ### Changed

@@ -3,7 +3,7 @@
 	"publisher": "wesleyegberto",
 	"displayName": "Java Tests",
 	"description": "Extension to help write tests in Java.",
-	"version": "0.2.1",
+	"version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/wesleyegberto/vscode-java-tests.git"
