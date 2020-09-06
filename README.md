@@ -162,7 +162,7 @@ public class ObjectServiceTest {
 
 ## Known Bugs
 
-- [ ] Generic type isn't correctly parsed (`TypedClass<T>` -> `TypedClass`)
+- [x] Generic type isn't correctly parsed (`TypedClass<T>` -> `TypedClass`)
 
 ## Roadmap
 

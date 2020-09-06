@@ -10,7 +10,7 @@ export async function parseJavaClassesFromFile(javaFileUri: vscode.Uri): Promise
   return parseJavaClassesFromSourceCode(javaSourceCode);
 }
 
-export async function parseJavaClassesFromSourceCode(javaSourceCode: string): Promise<TargetClassOrNull> {
+export function parseJavaClassesFromSourceCode(javaSourceCode: string): TargetClassOrNull {
   let parsedCode: ParseTree | null = null;
   try {
     parsedCode = parse(javaSourceCode);
@@ -53,7 +53,7 @@ function buildJavaClassDefinition(type: TypeDeclarationContext, classDeclaration
   if (type.classOrInterfaceModifier()) {
     type.classOrInterfaceModifier().forEach(c => {
       if (c.PUBLIC()) {
-        // extra espace to facilitate the file write
+        // extra space to facilitate the file write
         accessModifier = 'public ';
       }
     });
@@ -110,8 +110,14 @@ function buildJavaClassDefinition(type: TypeDeclarationContext, classDeclaration
         }
       }
     });
+
+  let className = classDeclaration.IDENTIFIER().text;
+  if (classDeclaration.typeParameters()) {
+    className = className + classDeclaration.typeParameters()!.text;
+  }
+
   const targetClass = new JavaClass(
-    classDeclaration.IDENTIFIER().text,
+    className,
     accessModifier,
     classDependencies,
     classMethods
