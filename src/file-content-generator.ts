@@ -35,7 +35,7 @@ export async function generateTestClassFileContent(
 function createTestClass(javaClass: JavaClass) {
   const varName = lowercaseFirstLetter(javaClass.className);
 
-  let testClassContent = `\n${javaClass.accessModifier}class ${javaClass.className}Test {\n`;
+  let testClassContent = `\n@RunWith(MockitoJUnitRunner.class)\n${javaClass.accessModifier}class ${javaClass.className}Test {\n`;
 
   let constructorArgs = '';
   if (javaClass.constructorParameters && javaClass.constructorParameters.length > 0) {
@@ -122,8 +122,10 @@ import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;\n`;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;\n`;
 }
 
 function generateTestClassPackageDeclaration(testFileUri: vscode.Uri, testClassName: string) {

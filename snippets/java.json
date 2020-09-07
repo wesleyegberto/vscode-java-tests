@@ -103,8 +103,8 @@
 		"prefix": "mock_arg_capture",
 		"body": [
 			"ArgumentCaptor<${1:Object}> ${2:argCaptor} = ArgumentCaptor.forClass(${1:Object}.class);",
-			"verify(${3:mockedService}).executeMagicWith(${2:argCaptor}.capture());",
-			"${1:Object} ${4:actualArg} = ${2:argCaptor}.getValue();"
+			"verify(${3:mockedService}).${4:executeMagicWith}(${2:argCaptor}.capture());",
+			"${1:Object} ${5:actualArg} = ${2:argCaptor}.getValue();"
 		],
 		"description": "Capture an argument given to a mocked method"
 	},
