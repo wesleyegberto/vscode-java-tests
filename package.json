@@ -18,22 +18,26 @@
 	"activationEvents": [
 		"onLanguage:java",
 		"onCommand:java.tests.createTestClass",
-		"onCommand:java.tests.newClass"
+		"onCommand:java.tests.createNewClass"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "java.tests.createTestClass",
-				"title": "Java Tests: Create/Open Test Class"
+				"command": "java.tests.createNewClass",
+				"title": "Java: Create new class"
 			},
 			{
-				"command": "java.tests.newClass",
-				"title": "Java Tests: Create new class"
+				"command": "java.tests.createTestClass",
+				"title": "Java: Create/Open Test Class"
 			}
 		],
 		"menus": {
 			"explorer/context": [
+				{
+					"command": "java.tests.createNewClass",
+					"group": "vscodeJavaTests@1"
+				},
 				{
 					"when": "resourceLangId == java",
 					"command": "java.tests.createTestClass",

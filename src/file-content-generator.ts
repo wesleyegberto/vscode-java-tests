@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import { posix } from 'path';
+
 import { parseJavaClassesFromFile } from './class-parser';
 import { JavaClass } from './types';
 
@@ -32,23 +34,32 @@ export async function generateTestClassFileContent(
   return Buffer.from(fileContent, 'utf8');
 }
 
-export function extractPackageName(fileUri: vscode.Uri, fileClassName: string, isTest: boolean): string {
-  const pathPrefix = isTest ? '/src/test/java' : '/src/main/java';
-  const startIndex = fileUri.fsPath.indexOf(pathPrefix) + 15; // '/src/test/java/'.length
-  const endIndex = fileUri.fsPath.indexOf(fileClassName) - 1;
-  if (startIndex >= endIndex) {
-    return '';
-  }
-  return fileUri.fsPath.substring(startIndex, endIndex).replace(/\//g, '.');
-}
-
 export function generateEmptyClassContent(packageName: string, className: string): Buffer {
   let classContent = '';
   if (packageName && packageName.length) {
     classContent = `package ${packageName};\n\n`;
   }
-  classContent += `public class ${className} {\n\n}`;
+  classContent += `public class ${className} {\n\t\n}`;
   return Buffer.from(classContent, 'utf8');
+}
+
+export function createPackageNameFromUri(uri: vscode.Uri, filename: string | null = null, isTest: boolean = false): string {
+  const pathPrefix = isTest ? '/src/test/java' : '/src/main/java';
+  const startIndex = uri.fsPath.indexOf(pathPrefix) + 15; // '/src/test/java/'.length
+  let endIndex = uri.path.length;
+
+  const extension = posix.extname(uri.path);
+  if (extension && extension.length > 0) {
+    if (!filename || !filename.length) {
+      filename = posix.basename(uri.path);
+    }
+    endIndex = uri.fsPath.indexOf(filename) - 1;
+    if (startIndex >= endIndex) {
+      return '';
+    }
+  }
+
+  return uri.fsPath.substring(startIndex, endIndex).replace(/\//g, '.');
 }
 
 function createTestClass(javaClass: JavaClass) {
@@ -147,8 +158,14 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;\n`;
 }
 
+export function getTestFileUri(javaFileUri: vscode.Uri, testClassName: string) {
+  const testPath = javaFileUri.path.replace('/src/main/java', '/src/test/java');
+  const testFilePath = posix.join(testPath, '..', `${testClassName}.java`);
+  return javaFileUri.with({ path: testFilePath });
+}
+
 function generateTestClassPackageDeclaration(testFileUri: vscode.Uri, testClassName: string) {
-  const packageName = extractPackageName(testFileUri, testClassName, true);
+  const packageName = createPackageNameFromUri(testFileUri, testClassName, true);
   if (!packageName.length) {
     return '';
   }
@@ -156,7 +173,7 @@ function generateTestClassPackageDeclaration(testFileUri: vscode.Uri, testClassN
 }
 
 function generateTargetTestClassPackageImport(javaFileUri: vscode.Uri, javaClassName: string) {
-  const packageName = extractPackageName(javaFileUri, javaClassName, false);
+  const packageName = createPackageNameFromUri(javaFileUri, javaClassName, false);
   if (!packageName.length) {
     return '';
   }

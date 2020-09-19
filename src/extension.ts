@@ -1,23 +1,28 @@
 import * as vscode from 'vscode';
 import { posix } from 'path';
 
-import { generateTestClassFileContent, generateEmptyClassContent } from './file-content-generator';
+import { generateTestClassFileContent, generateEmptyClassContent, getTestFileUri, createPackageNameFromUri } from './file-content-generator';
 
 export function activate(context: vscode.ExtensionContext) {
-  console.debug('Java Tests - Extension loaded');
-
   context.subscriptions.push(
-    vscode.commands.registerCommand('java.tests.newClass', createNewClass),
+    vscode.commands.registerCommand('java.tests.createNewClass', createNewClass),
     vscode.commands.registerCommand('java.tests.createTestClass', createTestClass)
   );
 }
 
-export function deactivate() {}
+async function createNewClass(args: any) {
+  let qualifiedClassName = null;
 
-async function createNewClass() {
-  let qualifiedClassName = await vscode.window.showInputBox({
+  let inputValue = undefined;
+  if (args) {
+    inputValue = createPackageNameFromUri(args as vscode.Uri) + '.';
+  }
+
+  qualifiedClassName = await vscode.window.showInputBox({
     placeHolder: 'com.company.MyClass',
-    ignoreFocusOut: true
+    ignoreFocusOut: true,
+    value: inputValue,
+    valueSelection: inputValue ? [inputValue.length, inputValue.length] : undefined
   });
 
   if (!qualifiedClassName || !qualifiedClassName.length) {
@@ -46,12 +51,13 @@ async function createNewClass() {
   try {
     await vscode.workspace.fs.stat(filePath);
     vscode.window.showWarningMessage(`File already exists: ${classPackagePath}/${className}.java`);
+    vscode.window.showTextDocument(filePath);
 
   } catch {
     const fileContent = generateEmptyClassContent(classPackage, className);
     await vscode.workspace.fs.writeFile(filePath, fileContent);
+    vscode.window.showTextDocument(filePath, { selection: new vscode.Range(3, 1, 3, 1) });
   }
-  vscode.window.showTextDocument(filePath);
 }
 
 async function createTestClass(args: any) {
@@ -96,10 +102,4 @@ function showTestFile(testFileUri: vscode.Uri) {
   vscode.window.showTextDocument(testFileUri, {
     viewColumn: configOpenLocationValue === 'beside' ? vscode.ViewColumn.Beside : vscode.ViewColumn.Active
   });
-}
-
-function getTestFileUri(javaFileUri: vscode.Uri, testClassName: string) {
-  const testPath = javaFileUri.path.replace('/src/main/java', '/src/test/java');
-  const testFilePath = posix.join(testPath, '..', `${testClassName}.java`);
-  return javaFileUri.with({ path: testFilePath });
 }
