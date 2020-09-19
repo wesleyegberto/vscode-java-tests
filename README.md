@@ -5,7 +5,8 @@ Extension to help write tests in Java using JUnit and Mockito.
 Features:
 
 * Snippets to write tests
-* Generate or open a test class for a given class
+* Generate/open a test class for a given class
+* Generate/open a class using its qualified name (like IntelliJ IDEA)
 
 ## How to Use
 
@@ -14,6 +15,7 @@ Features:
 | Command | Action | Description |
 | - | - | - |
 | `java.tests.createTestClass` | `Create/Open Test File` | Generate or open a test class |
+| `java.tests.newClass` | `Create new class` | Generate or open a class from its qualified name |
 
 ### Snippets
 
@@ -51,7 +53,7 @@ Generate the test class with the following structure:
 * Define a test case for each public method that is not a setter (start with `set` and has only one parameter)
 * Declare the variables to be passed as argument to the public method and to store the result, if needed
 
-Example:
+#### Example
 
 Given the file `/src/main/java/com/github/sample/ObjectService.java`:
 
@@ -157,6 +159,24 @@ public class ObjectServiceTest {
 
         // TODO: assert scenario
     }
+}
+```
+
+### Create New Class
+
+Generate or open a class inside the folder `src/main/java` from a qualified class name (like IntelliJ IDEA).
+
+#### Example
+
+Give the input `com.github.sample.ObjectService`
+
+Will generate a file `/src/main/java/com/github/sample/ObjectService.java` with the following content:
+
+```java
+package com.github.sample;
+
+public class ObjectService {
+
 }
 ```
 
