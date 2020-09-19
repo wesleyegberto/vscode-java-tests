@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.0] - 2020-09-08
+
+### Added
+
+- Command and context menu to generate or open a class using its qualified name
+
+### Changed
+
+- Fixed field name generated in test class for generic type
+- Command title prefix from `Java Test:` to `Java:`
+
 ## [1.0.1] - 2020-09-08
 
 ### Added

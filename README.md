@@ -15,7 +15,7 @@ Features:
 | Command | Action | Description |
 | - | - | - |
 | `java.tests.createTestClass` | `Create/Open Test File` | Generate or open a test class |
-| `java.tests.newClass` | `Create new class` | Generate or open a class from its qualified name |
+| `java.tests.createNewClass` | `Create new class` | Generate or open a class from its qualified name |
 
 ### Snippets
 
@@ -181,8 +181,6 @@ public class ObjectService {
 ```
 
 ## Known Bugs
-
-- [x] Generic type isn't correctly parsed (`TypedClass<T>` -> `TypedClass`)
 
 ## Roadmap
 
