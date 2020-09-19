@@ -69,11 +69,11 @@ function createTestClass(javaClass: JavaClass) {
     }
   }
 
-  testClassContent += `\n\tprivate ${javaClass.className} ${varName};
+  testClassContent += `\n\tprivate ${javaClass.className}${javaClass.classParameters} ${varName};
 
 \t@Before
 \tpublic void setup() {
-\t\tthis.${varName} = new ${javaClass.className}(${constructorArgs});
+\t\tthis.${varName} = new ${javaClass.className}${javaClass.classParameters}(${constructorArgs});
 \t}\n`;
 
   if (javaClass.publicMethods && javaClass.publicMethods.length) {

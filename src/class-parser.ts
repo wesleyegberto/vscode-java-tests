@@ -111,13 +111,9 @@ function buildJavaClassDefinition(type: TypeDeclarationContext, classDeclaration
       }
     });
 
-  let className = classDeclaration.IDENTIFIER().text;
-  if (classDeclaration.typeParameters()) {
-    className = className + classDeclaration.typeParameters()!.text;
-  }
-
   const targetClass = new JavaClass(
-    className,
+    classDeclaration.IDENTIFIER().text,
+    classDeclaration.typeParameters()?.text,
     accessModifier,
     classDependencies,
     classMethods

@@ -31,7 +31,6 @@ async function createNewClass() {
   let classPackage = '';
   let className = qualifiedClassName;
   if (qualifiedClassName.indexOf('.') >= 0) {
-    // TODO: create class with package
     const parts = qualifiedClassName.split('.');
     if (parts.length > 1) {
       classPackagePath = parts.splice(0, parts.length - 1).join('/');
