@@ -7,7 +7,7 @@ export async function generateTestClassFileContent(
   javaClassName: string,
   testFileUri: vscode.Uri,
   testClassName: string
-) {
+): Promise<Buffer> {
   const packageDeclaration = generateTestClassPackageDeclaration(testFileUri, testClassName);
 
   const javaClasses = await parseJavaClassesFromFile(javaFileUri);
@@ -30,6 +30,25 @@ export async function generateTestClassFileContent(
   }
 
   return Buffer.from(fileContent, 'utf8');
+}
+
+export function extractPackageName(fileUri: vscode.Uri, fileClassName: string, isTest: boolean): string {
+  const pathPrefix = isTest ? '/src/test/java' : '/src/main/java';
+  const startIndex = fileUri.fsPath.indexOf(pathPrefix) + 15; // '/src/test/java/'.length
+  const endIndex = fileUri.fsPath.indexOf(fileClassName) - 1;
+  if (startIndex >= endIndex) {
+    return '';
+  }
+  return fileUri.fsPath.substring(startIndex, endIndex).replace(/\//g, '.');
+}
+
+export function generateEmptyClassContent(packageName: string, className: string): Buffer {
+  let classContent = '';
+  if (packageName && packageName.length) {
+    classContent = `package ${packageName};\n\n`;
+  }
+  classContent += `public class ${className} {\n\n}`;
+  return Buffer.from(classContent, 'utf8');
 }
 
 function createTestClass(javaClass: JavaClass) {
@@ -142,16 +161,6 @@ function generateTargetTestClassPackageImport(javaFileUri: vscode.Uri, javaClass
     return '';
   }
   return `import ${packageName}.${javaClassName};`;
-}
-
-function extractPackageName(fileUri: vscode.Uri, fileClassName: string, isTest: boolean): string {
-  const pathPrefix = isTest ? '/src/test/java' : '/src/main/java';
-  const startIndex = fileUri.fsPath.indexOf(pathPrefix) + 15; // '/src/test/java/'.length
-  const endIndex = fileUri.fsPath.indexOf(fileClassName) - 1;
-  if (startIndex >= endIndex) {
-    return '';
-  }
-  return fileUri.fsPath.substring(startIndex, endIndex).replace(/\//g, '.');
 }
 
 function capitalizeFirstLetter(string: string): string {

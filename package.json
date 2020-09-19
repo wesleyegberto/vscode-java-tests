@@ -17,7 +17,8 @@
 	],
 	"activationEvents": [
 		"onLanguage:java",
-		"onCommand:java.tests.createTestClass"
+		"onCommand:java.tests.createTestClass",
+		"onCommand:java.tests.newClass"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -25,6 +26,10 @@
 			{
 				"command": "java.tests.createTestClass",
 				"title": "Java Tests: Create/Open Test Class"
+			},
+			{
+				"command": "java.tests.newClass",
+				"title": "Java Tests: Create new class"
 			}
 		],
 		"menus": {

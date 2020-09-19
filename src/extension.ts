@@ -1,17 +1,59 @@
 import * as vscode from 'vscode';
 import { posix } from 'path';
 
-import { generateTestClassFileContent } from './file-content-generator';
+import { generateTestClassFileContent, generateEmptyClassContent } from './file-content-generator';
 
 export function activate(context: vscode.ExtensionContext) {
   console.debug('Java Tests - Extension loaded');
 
   context.subscriptions.push(
+    vscode.commands.registerCommand('java.tests.newClass', createNewClass),
     vscode.commands.registerCommand('java.tests.createTestClass', createTestClass)
   );
 }
 
 export function deactivate() {}
+
+async function createNewClass() {
+  let qualifiedClassName = await vscode.window.showInputBox({
+    placeHolder: 'com.company.MyClass',
+    ignoreFocusOut: true
+  });
+
+  if (!qualifiedClassName || !qualifiedClassName.length) {
+    return;
+  }
+  if (qualifiedClassName.endsWith('.java')) {
+    qualifiedClassName = qualifiedClassName.replace('.java', '');
+  }
+
+  let classPackagePath = '';
+  let classPackage = '';
+  let className = qualifiedClassName;
+  if (qualifiedClassName.indexOf('.') >= 0) {
+    // TODO: create class with package
+    const parts = qualifiedClassName.split('.');
+    if (parts.length > 1) {
+      classPackagePath = parts.splice(0, parts.length - 1).join('/');
+      classPackage = classPackagePath.replace(/\//g, '.');
+    }
+    className = parts[parts.length - 1];
+  }
+
+  const folders = vscode.workspace.workspaceFolders;
+  const rootPath = folders ? folders[0].uri.path : '.';
+
+  let filePath = vscode.Uri.parse(`${rootPath}/src/main/java/${classPackagePath}/${className}.java`);
+  try {
+    await vscode.workspace.fs.stat(filePath);
+    vscode.window.showWarningMessage(`File already exists: ${classPackagePath}/${className}.java`);
+
+  } catch {
+    const fileContent = generateEmptyClassContent(classPackage, className);
+    await vscode.workspace.fs.writeFile(filePath, fileContent);
+  }
+  vscode.window.showTextDocument(filePath);
+}
 
 async function createTestClass(args: any) {
   let javaFileUri: vscode.Uri;
@@ -42,13 +84,11 @@ async function createTestClass(args: any) {
 
   try {
     await vscode.workspace.fs.stat(testFileUri);
-    showTestFile(testFileUri);
   } catch {
     const fileContent = await generateTestClassFileContent(javaFileUri, javaClassName, testFileUri, testClassName);
     await vscode.workspace.fs.writeFile(testFileUri, fileContent);
-
-    showTestFile(testFileUri);
   }
+  showTestFile(testFileUri);
 }
 
 function showTestFile(testFileUri: vscode.Uri) {
