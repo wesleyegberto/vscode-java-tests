@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.2.0] - 2020-11-15
+
+### Added
+
+- Created option to define the test class structure:
+  - if should mock constructor's parameters
+  - if should create test case for each method
+  - if should ignore static method when creating test case
+
 ## [1.1.0] - 2020-09-08
 
 ### Added
