@@ -56,6 +56,33 @@
 						"currentGroup"
 					],
 					"description": "Controls where test class should be opened."
+				},
+				"javaTests.template.mockConstructorParameters": {
+					"type": "string",
+					"default": "Yes",
+					"enum": [
+						"Yes",
+						"No"
+					],
+					"description": "Create mock for constructor's parameters"
+				},
+				"javaTests.template.createTestCaseForEachMethod": {
+					"type": "string",
+					"default": "Yes",
+					"enum": [
+						"Yes",
+						"No"
+					],
+					"description": "Create a test case for each method"
+				},
+				"javaTests.template.ignoreStaticMethodsInTestCase": {
+					"type": "string",
+					"default": "No",
+					"enum": [
+						"Yes",
+						"No"
+					],
+					"description": "Ignore static methods when creating test case"
 				}
 			}
 		},

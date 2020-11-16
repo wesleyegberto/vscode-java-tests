@@ -34,10 +34,12 @@ export class Method {
   returnType: string;
   name: string;
   parameters: Array<Parameter>;
+  isStatic: boolean;
 
-  constructor(returnType: string, name: string, parameters: Array<Parameter> | null) {
+  constructor(returnType: string, name: string, parameters: Array<Parameter> | null, isStatic: boolean = false) {
     this.returnType = returnType;
     this.name = name;
     this.parameters = parameters || [];
+    this.isStatic = isStatic;
   }
 }

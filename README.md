@@ -186,9 +186,9 @@ public class ObjectService {
 
 - [x] Snippets to test
 - [x] Generate a test case for each method
-- [ ] Create option to define if should mock the constructor's parameters
-- [ ] Create option to define if should create a test case for each method
-- [ ] Create option to ignore the static methods
+- [x] Create option to define if should mock the constructor's parameters
+- [x] Create option to define if should create a test case for each method
+- [x] Create option to ignore the static methods
 - [ ] Auto import the types used in arguments to constructor and methods
 - [ ] Command to create the target class in `src/main/java` when doing TDD
 - [ ] Create tests for the extension

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { posix } from 'path';
 
 import { generateTestClassFileContent, generateEmptyClassContent, getTestFileUri, createPackageNameFromUri } from './file-content-generator';
+import { JavaTestsSettingsKeys, readConfigurationValue } from './vscode-settings';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -97,8 +98,7 @@ async function createTestClass(args: any) {
 }
 
 function showTestFile(testFileUri: vscode.Uri) {
-  const config = vscode.workspace.getConfiguration('javaTests');
-  const configOpenLocationValue = config.get('file.openLocation', 'beside');
+  const configOpenLocationValue = readConfigurationValue(JavaTestsSettingsKeys.FILE_OPEN_LOCATION, 'beside');
   vscode.window.showTextDocument(testFileUri, {
     viewColumn: configOpenLocationValue === 'beside' ? vscode.ViewColumn.Beside : vscode.ViewColumn.Active
   });

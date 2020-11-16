@@ -3,6 +3,7 @@ import { posix } from 'path';
 
 import { parseJavaClassesFromFile } from './class-parser';
 import { JavaClass } from './types';
+import { ExtensionSettings, getExtensionConfiguration } from './vscode-settings';
 
 export async function generateTestClassFileContent(
   javaFileUri: vscode.Uri,
@@ -13,7 +14,7 @@ export async function generateTestClassFileContent(
   const packageDeclaration = generateTestClassPackageDeclaration(testFileUri, testClassName);
 
   const javaClasses = await parseJavaClassesFromFile(javaFileUri);
-  console.log(javaClasses);
+  // console.log(javaClasses);
 
   let fileContent = packageDeclaration + createDefaultImports();
 
@@ -63,32 +64,49 @@ export function createPackageNameFromUri(uri: vscode.Uri, filename: string | nul
 }
 
 function createTestClass(javaClass: JavaClass) {
+  const settings = getExtensionConfiguration();
+
   const varName = lowercaseFirstLetter(javaClass.className);
 
   let testClassContent = `\n@RunWith(MockitoJUnitRunner.class)\n${javaClass.accessModifier}class ${javaClass.className}Test {\n`;
 
   let constructorArgs = '';
-  if (javaClass.constructorParameters && javaClass.constructorParameters.length > 0) {
-    for (const param of javaClass.constructorParameters) {
-      const attributeName = lowercaseFirstLetter(param.name);
-      if (constructorArgs.length) {
-        constructorArgs += `, ${attributeName}`;
-      } else {
-        constructorArgs = attributeName;
+  if (settings.mockConstrutorParameters) {
+    if (javaClass.constructorParameters && javaClass.constructorParameters.length > 0) {
+      for (const param of javaClass.constructorParameters) {
+        const attributeName = lowercaseFirstLetter(param.name);
+        if (constructorArgs.length) {
+          constructorArgs += `, ${attributeName}`;
+        } else {
+          constructorArgs = attributeName;
+        }
+        testClassContent += `\t@Mock\n\tprivate ${param.type} ${attributeName};\n`;
       }
-      testClassContent += `\t@Mock\n\tprivate ${param.type} ${attributeName};\n`;
     }
   }
 
-  testClassContent += `\n\tprivate ${javaClass.className}${javaClass.classParameters} ${varName};
-
+  testClassContent += `\n\tprivate ${javaClass.className}${javaClass.classParameters} ${varName};\n
 \t@Before
 \tpublic void setup() {
 \t\tthis.${varName} = new ${javaClass.className}${javaClass.classParameters}(${constructorArgs});
 \t}\n`;
 
+  if (settings.createTestCaseForEachMethod) {
+    testClassContent = generateTestCaseForEachPublicMethod(settings, javaClass, testClassContent, varName);
+  }
+
+  return testClassContent + '}\n';
+}
+
+function generateTestCaseForEachPublicMethod(settings: ExtensionSettings, javaClass: JavaClass,
+  testClassContent: string, varName: string) {
+
   if (javaClass.publicMethods && javaClass.publicMethods.length) {
     for (const method of javaClass.publicMethods) {
+      if (method.isStatic && settings.ignoreStaticMethodTestCase) {
+        continue;
+      }
+
       testClassContent += `\n\t@Test
 \tpublic void should${capitalizeFirstLetter(method.name)}() {\n`;
 
@@ -114,7 +132,8 @@ function createTestClass(javaClass: JavaClass) {
         testClassContent += '\t\t';
       }
 
-      testClassContent += `${varName}.${method.name}(${methodArgs});\n\n\t\t// TODO: assert scenario\n\t}\n`;
+      let accessor = method.isStatic ? javaClass.className : varName;
+      testClassContent += `${accessor}.${method.name}(${methodArgs});\n\n\t\t// TODO: assert scenario\n\t}\n`;
     }
 
   } else {
@@ -123,8 +142,7 @@ function createTestClass(javaClass: JavaClass) {
 \t\tassertThat("Actual value", is("Expected value"));
 \t}\n`;
   }
-
-  return testClassContent + '}\n';
+  return testClassContent;
 }
 
 function createDefaultTestClass(javaClassName: string, testClassName: string) {

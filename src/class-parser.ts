@@ -104,7 +104,12 @@ function buildJavaClassDefinition(type: TypeDeclarationContext, classDeclaration
             return;
           }
 
-          classMethods.push(new Method(method.typeTypeOrVoid().text, method.IDENTIFIER().text, methodParameters));
+          classMethods.push(new Method(
+            method.typeTypeOrVoid().text,
+            method.IDENTIFIER().text,
+            methodParameters,
+            hasStaticAccessModifier(classBody.modifier())
+          ));
         } catch (err) {
           console.error('Error handling body ', classBody.text, err);
         }
@@ -140,6 +145,13 @@ function hasPrivateAccessModifier(modifiers: ModifierContext[] | undefined): boo
     return false;
   }
   return modifiers.findIndex(member => member.classOrInterfaceModifier()?.PRIVATE()) >= 0;
+}
+
+function hasStaticAccessModifier(modifiers: ModifierContext[] | undefined): boolean {
+  if (!modifiers) {
+    return false;
+  }
+  return modifiers.findIndex(member => member.classOrInterfaceModifier()?.STATIC()) >= 0;
 }
 
 function extractParameters(formalParameters: FormalParametersContext): Array<Parameter> | null {
