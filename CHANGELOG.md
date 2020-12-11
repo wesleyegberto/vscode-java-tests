@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.2.1] - 2020-12-11
+
+### Added
+
+- Simple icon
+
 ## [1.2.0] - 2020-11-15
 
 ### Added

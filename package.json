@@ -1,9 +1,14 @@
 {
 	"name": "vscode-java-tests",
 	"publisher": "wesleyegberto",
+	"galleryBanner": {
+		"color": "##ff8c00",
+		"theme": "dark"
+	},
+	"icon": "images/icon-128.png",
 	"displayName": "Java Tests",
 	"description": "Extension to help write tests in Java.",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/wesleyegberto/vscode-java-tests.git"
