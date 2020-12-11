@@ -1,10 +1,6 @@
 {
 	"name": "vscode-java-tests",
 	"publisher": "wesleyegberto",
-	"galleryBanner": {
-		"color": "##ff8c00",
-		"theme": "dark"
-	},
 	"icon": "images/icon-128.png",
 	"displayName": "Java Tests",
 	"description": "Extension to help write tests in Java.",
