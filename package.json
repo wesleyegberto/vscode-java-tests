@@ -101,6 +101,10 @@
 			{
 				"language": "java",
 				"path": "./snippets/java.json"
+			},
+			{
+				"language": "xml",
+				"path": "./snippets/xml.json"
 			}
 		]
 	},
