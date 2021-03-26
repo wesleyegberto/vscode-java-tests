@@ -84,6 +84,16 @@
 						"No"
 					],
 					"description": "Ignore static methods when creating test case"
+				},
+				"javaTests.template.junitDefaultVersion": {
+					"type": "string",
+					"default": "4",
+					"enum": [
+						"4",
+						"5",
+						"alwaysAsk"
+					],
+					"description": "JUnit version used in the project."
 				}
 			}
 		},
