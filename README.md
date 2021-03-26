@@ -8,6 +8,10 @@ Features:
 * Generate/open a test class for a given class
 * Generate/open a class using its qualified name (like IntelliJ IDEA)
 
+Currently it only generates snippets for JUnit 4, but 5 is on the way.
+
+I also recommend install Microsoft's [Java Test Runner](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-test)
+
 ## How to Use
 
 ### Commands
@@ -18,6 +22,8 @@ Features:
 | `java.tests.createNewClass` | `Create new class` | Generate or open a class from its qualified name |
 
 ### Snippets
+
+#### Java
 
 | Prefix | Description |
 | - | - |
@@ -37,6 +43,12 @@ Features:
 | `mock_verify_times` | Verify if a mocked method was called `n` times |
 | `mock_verify_never` | Verify if a mocked method was never called |
 | `mock_arg_capture` | Capture an argument given to a mocked method using `ArgumentCaptor` |
+
+#### POM.xml
+
+| Prefix | Description |
+| - | - |
+| `junit5-deps` | JUnit 5 dependencies |
 
 ## Actions
 
@@ -184,11 +196,21 @@ public class ObjectService {
 
 ## Roadmap
 
+### Done
+
 - [x] Snippets to test
 - [x] Generate a test case for each method
 - [x] Create option to define if should mock the constructor's parameters
 - [x] Create option to define if should create a test case for each method
 - [x] Create option to ignore the static methods
+
+### Doing
+
+- [ ] Generate template for JUnit 5 (imports, tests, checkers)
+
+### ToDo
+
+- [ ] Remember JUnit version by project
 - [ ] Auto import the types used in arguments to constructor and methods
 - [ ] Command to create the target class in `src/main/java` when doing TDD
 - [ ] Create tests for the extension
@@ -196,3 +218,4 @@ public class ObjectService {
 ## Links
 
 - [Github Repository](https://github.com/wesleyegberto/vscode-java-tests)
+- [JUnit 5 Docs](https://junit.org/junit5/docs/current/user-guide/)

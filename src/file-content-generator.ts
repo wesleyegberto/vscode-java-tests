@@ -11,12 +11,19 @@ export async function generateTestClassFileContent(
   testFileUri: vscode.Uri,
   testClassName: string
 ): Promise<Buffer> {
+  const settings = getExtensionConfiguration();
+
+  if (settings.junitDefaultVersion === 'alwaysAsk') {
+    const inputedVersion = await vscode.window.showInputBox({ prompt: 'JUnit version', value: '4' });
+    settings.junitDefaultVersion = inputedVersion === '5' ? '5' : '4';
+  }
+
   const packageDeclaration = generateTestClassPackageDeclaration(testFileUri, testClassName);
 
   const javaClasses = await parseJavaClassesFromFile(javaFileUri);
   // console.log(javaClasses);
 
-  let fileContent = packageDeclaration + createDefaultImports();
+  let fileContent = packageDeclaration + createDefaultImports(settings);
 
   if (javaClasses && javaClasses.length > 0) {
     // find (or set) a public class (required by JUnit)
@@ -26,7 +33,7 @@ export async function generateTestClassFileContent(
       publicClass.accessModifier = 'public ';
     }
 
-    fileContent += createTestClass(publicClass);
+    fileContent += createTestClass(publicClass, settings);
 
   } else {
     fileContent += createDefaultTestClass(javaClassName, testClassName);
@@ -63,12 +70,16 @@ export function createPackageNameFromUri(uri: vscode.Uri, filename: string | nul
   return uri.fsPath.substring(startIndex, endIndex).replace(/\//g, '.');
 }
 
-function createTestClass(javaClass: JavaClass) {
-  const settings = getExtensionConfiguration();
-
+function createTestClass(javaClass: JavaClass, settings: ExtensionSettings) {
   const varName = lowercaseFirstLetter(javaClass.className);
 
-  let testClassContent = `\n@RunWith(MockitoJUnitRunner.class)\n${javaClass.accessModifier}class ${javaClass.className}Test {\n`;
+  let testClassContent = `\n${javaClass.accessModifier}class ${javaClass.className}Test {\n`;
+
+  if (settings.junitDefaultVersion === '5') {
+    testClassContent = '\n@ExtendWith(MockitoExtension.class)' + testClassContent;
+  } else {
+    testClassContent = '\n@RunWith(MockitoJUnitRunner.class)' + testClassContent;
+  }
 
   let constructorArgs = '';
   if (settings.mockConstrutorParameters) {
@@ -161,7 +172,27 @@ function createDefaultTestClass(javaClassName: string, testClassName: string) {
 }`;
 }
 
-function createDefaultImports() {
+function createDefaultImports(settings: ExtensionSettings) {
+  // Junit 5
+  if (settings.junitDefaultVersion === '5') {
+    return `\n\nimport static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.ArgumentCaptor;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mock;\n`;
+  }
+
+  // JUnit 4
   return `\n\nimport static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
