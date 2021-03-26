@@ -1,5 +1,8 @@
 # VSCode Java Tests
 
+[![](https://vsmarketplacebadge.apphb.com/version/wesleyegberto.vscode-java-tests.svg)](https://marketplace.visualstudio.com/items?itemName=wesleyegberto.vscode-java-tests)
+[![](https://vsmarketplacebadge.apphb.com/installs-short/wesleyegberto.vscode-java-tests.svg)](https://marketplace.visualstudio.com/items?itemName=wesleyegberto.vscode-java-tests)
+
 Extension to help write tests in Java using JUnit and Mockito.
 
 Features:
