@@ -14,8 +14,12 @@ export async function generateTestClassFileContent(
   const settings = getExtensionConfiguration();
 
   if (settings.junitDefaultVersion === 'alwaysAsk') {
-    const inputedVersion = await vscode.window.showInputBox({ prompt: 'JUnit version', value: '4' });
-    settings.junitDefaultVersion = inputedVersion === '5' ? '5' : '4';
+    const items: Array<vscode.QuickPickItem> = [
+      { label: '4', description: 'JUnit 4' },
+      { label: '5', description: 'JUnit 5' }
+    ];
+    const inputedVersion = await vscode.window.showQuickPick(items);
+    settings.junitDefaultVersion = inputedVersion?.label === '5' ? '5' : '4';
   }
 
   const packageDeclaration = generateTestClassPackageDeclaration(testFileUri, testClassName);
@@ -36,7 +40,7 @@ export async function generateTestClassFileContent(
     fileContent += createTestClass(publicClass, settings);
 
   } else {
-    fileContent += createDefaultTestClass(javaClassName, testClassName);
+    fileContent += createDefaultTestClass(javaClassName, testClassName, settings);
   }
 
   return Buffer.from(fileContent, 'utf8');
@@ -97,7 +101,7 @@ function createTestClass(javaClass: JavaClass, settings: ExtensionSettings) {
   }
 
   testClassContent += `\n\tprivate ${javaClass.className}${javaClass.classParameters} ${varName};\n
-\t@Before
+\t@Before${settings.junitDefaultVersion === '5' ? 'Each' : ''}
 \tpublic void setup() {
 \t\tthis.${varName} = new ${javaClass.className}${javaClass.classParameters}(${constructorArgs});
 \t}\n`;
@@ -156,11 +160,11 @@ function generateTestCaseForEachPublicMethod(settings: ExtensionSettings, javaCl
   return testClassContent;
 }
 
-function createDefaultTestClass(javaClassName: string, testClassName: string) {
+function createDefaultTestClass(javaClassName: string, testClassName: string, settings: ExtensionSettings) {
   return `\npublic class ${testClassName} {
 \tprivate ${javaClassName} cut;
 
-\t@Before
+\t@Before${settings.junitDefaultVersion === '5' ? 'Each': ''}
 \tpublic void setup() {
 \t\tthis.cut = new ${javaClassName}();
 \t}

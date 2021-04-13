@@ -1,32 +1,52 @@
 {
+	"JUnit5 Properties": {
+		"prefix": "junit5-props",
+		"description": "JUnit 5 version properties",
+		"body": [
+			"<junit.jupiter.version>${1:5.7.1}</junit.jupiter.version>",
+			"<junit.platform.version>${2:1.2.0}</junit.platform.version>"
+		]
+	},
 	"JUnit5 Deps": {
 		"prefix": "junit5-deps",
 		"body": [
 			"<dependency>",
 			"\t<groupId>org.junit.jupiter</groupId>",
 			"\t<artifactId>junit-jupiter-engine</artifactId>",
-			"\t<version>${1:5.2.0}</version>",
+			"\t<version>${junit.jupiter.version}</version>",
 			"\t<scope>test</scope>",
 			"</dependency>",
 			"<dependency>",
 			"\t<groupId>org.junit.jupiter</groupId>",
 			"\t<artifactId>junit-jupiter-params</artifactId>",
-			"\t<version>${1:5.2.0}</version>",
+			"\t<version>${junit.jupiter.version}</version>",
 			"\t<scope>test</scope>",
 			"</dependency>",
 			"<dependency>",
 			"\t<groupId>org.hamcrest</groupId>",
-			"\t<artifactId>hamcrest-library</artifactId>",
-			"\t<version>${2:1.3}</version>",
+			"\t<artifactId>hamcrest</artifactId>",
+			"\t<version>${2:2.2}</version>",
 			"\t<scope>test</scope>",
 			"</dependency>",
 			"<dependency>",
 			"\t<groupId>org.mockito</groupId>",
 			"\t<artifactId>mockito-junit-jupiter</artifactId>",
-			"\t<version>${3:3.8.0}</version>",
+			"\t<version>${3:3.9.0}</version>",
 			"\t<scope>test</scope>",
 			"</dependency>"
 		],
 		"description": "JUnit 5 dependencies"
+	},
+	"JUnit 5 Vintage": {
+		"prefix": "junit5-vintage",
+		"body": [
+			"<dependency>",
+			"\t<groupId>org.junit.vintage</groupId>",
+			"\t<artifactId>junit-vintage-engine</artifactId>",
+			"\t<version>${junit.jupiter.version}</version>",
+			"\t<scope>test</scope>",
+			"</dependency>"
+		],
+		"description": "JUnit 5 dependency to run tests from JUnit 3/4"
 	}
 }

@@ -1,6 +1,6 @@
 {
-	"Imports for Tests": {
-		"prefix": "imports_test",
+	"Imports for Tests with JUnit 4": {
+		"prefix": "imports_junit4",
 		"body": [
 			"import static org.hamcrest.Matchers.*;",
 			"import static org.junit.Assert.assertEquals;",
@@ -13,7 +13,28 @@
 			"import org.mockito.ArgumentCaptor;",
 			"import org.mockito.Mock;"
 		],
-		"description": "Imports to write tests with Mockito and Hamcrest"
+		"description": "Imports to write tests with JUnit 4, Mockito and Hamcrest"
+	},
+	"Imports for Tests with JUnit 5": {
+		"prefix": "imports_junit5",
+		"body": [
+			"import static org.hamcrest.Matchers.*;",
+			"import static org.hamcrest.MatcherAssert.assertThat;",
+			"import static org.junit.jupiter.api.Assertions.assertEquals;",
+			"import static org.mockito.Mockito.*;",
+			"import org.hamcrest.CoreMatchers;",
+			"import org.junit.jupiter.api.AfterEach;",
+			"import org.junit.jupiter.api.BeforeEach;",
+			"import org.junit.jupiter.api.DisplayName;",
+			"import org.junit.jupiter.api.Test;",
+			"import org.junit.jupiter.api.extension.ExtendWith;",
+			"import org.junit.jupiter.params.ParameterizedTest;",
+			"import org.junit.jupiter.params.provider.CsvSource;",
+			"import org.mockito.ArgumentCaptor;",
+			"import org.mockito.junit.jupiter.MockitoExtension;",
+			"import org.mockito.Mock;"
+		],
+		"description": "Imports to write tests with JUnit 4, Mockito and Hamcrest"
 	},
 	"Assert - is": {
 		"prefix": "test_is",
@@ -108,24 +129,38 @@
 		],
 		"description": "Capture an argument given to a mocked method"
 	},
-	"JUnit - Before each": {
+	"JUnit 4 - Before each": {
 		"prefix": "test_before",
-		"body": [
-			"@Before",
-			"public void setup() {",
-			"\t${1}",
-			"}"
-		],
+		"body": "@Before\npublic void setup() {\n\t${1}\n}",
 		"description": "Create setup method with `@Before`"
 	},
-	"JUnit - After each": {
+	"JUnit 4 - After each": {
 		"prefix": "test_after",
-		"body": [
-			"@After",
-			"public void tearDown() {",
-			"\t${1}",
-			"}"
-		],
+		"body": "@After\npublic void tearDown() {\n\t${1}\n}",
 		"description": "Create tear down method with `@After`"
+	},
+	"JUnit 5 - Before each": {
+		"prefix": "test_before",
+		"body": "@BeforeEach\npublic void setup() {\n\t${1}\n}",
+		"description": "Create setup method with `@BeforeEach`"
+	},
+	"JUnit 5 - After each": {
+		"prefix": "test_after",
+		"body": "@AfterEach\npublic void tearDown() {\n\t${1}\n}",
+		"description": "Create tear down method with `@AfterEach`"
+	},
+	"JUnit 5 - Assert Throws": {
+		"prefix": "test_exception",
+		"body": "Assertions.assertThrows(${1:Exception}.class, () -> {\n\t${0}\n});",
+		"description": "Assertion to verify if an exception was thrown"
+	},
+	"JUnit 5 - Parameterized Test": {
+		"prefix": "test_parameterized",
+		"description": "Create parameterized test",
+		"body": [
+			"@ParameterizedTest(name = \"${1:{0\\} plus {1\\} should be {2\\}}\"",
+			"@CsvSource({\n\t${2:\"0, 0, 0\",\n\t\"1, 0, 1\",\n\t\"1, 1, 2\"}\n})",
+			"public void shouldAddTwoNumbers(int x, int y, int expectedSum) {\n\t${0}\n}"
+		]
 	}
 }

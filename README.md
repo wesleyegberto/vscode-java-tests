@@ -3,7 +3,7 @@
 [![](https://vsmarketplacebadge.apphb.com/version/wesleyegberto.vscode-java-tests.svg)](https://marketplace.visualstudio.com/items?itemName=wesleyegberto.vscode-java-tests)
 [![](https://vsmarketplacebadge.apphb.com/installs-short/wesleyegberto.vscode-java-tests.svg)](https://marketplace.visualstudio.com/items?itemName=wesleyegberto.vscode-java-tests)
 
-Extension to help write tests in Java using JUnit and Mockito.
+Extension to help write tests in Java using JUnit 4/5 with Hamcrest and Mockito.
 
 Features:
 
@@ -11,7 +11,7 @@ Features:
 * Generate/open a test class for a given class
 * Generate/open a class using its qualified name (like IntelliJ IDEA)
 
-Currently it only generates snippets for JUnit 4, but 5 is on the way.
+It generates the test class with configuration to run with JUnit 4 or 5 (depending on the option `javaTests.template.junitDefaultVersion` in VS Code).
 
 I also recommend install Microsoft's [Java Test Runner](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-test)
 
@@ -30,7 +30,8 @@ I also recommend install Microsoft's [Java Test Runner](https://marketplace.visu
 
 | Prefix | Description |
 | - | - |
-| `imports_test` | Insert the imports for testing (Mockito, Hamcrast and JUnit) |
+| `imports_junit4` | Insert the imports for JUnit 4 (Mockito, Hamcrast and JUnit) |
+| `imports_junit5` | Insert the imports for JUnit 5 (Mockito, Hamcrast and JUnit) |
 | `test_before` | Create setup method with `@Before` |
 | `test_after` | Create tear down method with `@After` |
 | `test_is` | `assertThat` with `is` |
@@ -46,12 +47,16 @@ I also recommend install Microsoft's [Java Test Runner](https://marketplace.visu
 | `mock_verify_times` | Verify if a mocked method was called `n` times |
 | `mock_verify_never` | Verify if a mocked method was never called |
 | `mock_arg_capture` | Capture an argument given to a mocked method using `ArgumentCaptor` |
+| `test_exception` | Assertion to verify if an exception was thrown (only JUnit 5) |
+| `test_parameterized` | Create a parameterized test (only JUnit 5) |
 
 #### POM.xml
 
 | Prefix | Description |
 | - | - |
+| `junit5-props` | JUnit 5 verson properties |
 | `junit5-deps` | JUnit 5 dependencies |
+| `junit5-vintage` | JUnit 5 Vintage dependency to run tests from JUnit 3/4 |
 
 ## Actions
 
@@ -68,7 +73,7 @@ Generate the test class with the following structure:
 * Define a test case for each public method that is not a setter (start with `set` and has only one parameter)
 * Declare the variables to be passed as argument to the public method and to store the result, if needed
 
-#### Example
+#### Example in JUnit 4
 
 Given the file `/src/main/java/com/github/sample/ObjectService.java`:
 
@@ -197,22 +202,16 @@ public class ObjectService {
 
 ## Known Bugs
 
-## Roadmap
+- [ ] The generated test class tries to create a new instance even when there is only one private constructor
 
-### Done
+## Roadmap
 
 - [x] Snippets to test
 - [x] Generate a test case for each method
 - [x] Create option to define if should mock the constructor's parameters
 - [x] Create option to define if should create a test case for each method
 - [x] Create option to ignore the static methods
-
-### Doing
-
-- [ ] Generate template for JUnit 5 (imports, tests, checkers)
-
-### ToDo
-
+- [x] Generate template for JUnit 5 (imports, tests, checkers)
 - [ ] Remember JUnit version by project
 - [ ] Auto import the types used in arguments to constructor and methods
 - [ ] Command to create the target class in `src/main/java` when doing TDD
