@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.3.0] - 2021-04-13
+
+### Added
+
+- Started support for JUnit 5:
+  - imports
+  - pom.xml dependencies
+  - added snippets to specific JUnit 5 tests
+- Configuration `javaTests.template.junitDefaultVersion` to define the JUnit version
+
 ## [1.2.1] - 2020-12-11
 
 ### Added
