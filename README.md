@@ -5,9 +5,16 @@
 
 Extension to help write tests in Java using JUnit 4/5 with Hamcrest and Mockito.
 
+This extension tries to help by:
+
 Features:
 
-* Snippets to write tests
+* Snippets to add dependencies/plugins of test libs:
+  * JUnit 5 and Vintage
+  * [JaCoCo](https://www.jacoco.org/jacoco/): Code coverage report
+  * [JsonPath](https://github.com/json-path/JsonPath): Java DSL to facilitate the creation of JSON matchers
+  * [ArchUnit](https://github.com/TNG/ArchUnit): Java DSL to test project architecture
+* Snippets to write tests structures, assertione, mocks, so on
 * Generate/open a test class for a given class
 * Generate/open a class using its qualified name (like IntelliJ IDEA)
 
@@ -52,11 +59,16 @@ I also recommend install Microsoft's [Java Test Runner](https://marketplace.visu
 
 #### POM.xml
 
+Snippets for Maven.
+
 | Prefix | Description |
 | - | - |
 | `junit5-props` | JUnit 5 verson properties |
 | `junit5-deps` | JUnit 5 dependencies |
 | `junit5-vintage` | JUnit 5 Vintage dependency to run tests from JUnit 3/4 |
+| `jacoco-plugin` | Maven plugin for JaCoCo Code Coverage Library |
+| `archunit-junit5-dep` | ArchUnit dependency to run with Junit 5 |
+| `jsonpath-dep` | JsonPath dependency to facilitate the creation of matchers for JSON |
 
 ## Actions
 
@@ -212,6 +224,7 @@ public class ObjectService {
 - [x] Create option to define if should create a test case for each method
 - [x] Create option to ignore the static methods
 - [x] Generate template for JUnit 5 (imports, tests, checkers)
+- [ ] Snippets for Spring Boot tests (Rest Controller, Repository) - Doing
 - [ ] Remember JUnit version by project
 - [ ] Auto import the types used in arguments to constructor and methods
 - [ ] Command to create the target class in `src/main/java` when doing TDD

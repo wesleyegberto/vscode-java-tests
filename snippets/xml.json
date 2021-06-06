@@ -48,5 +48,55 @@
 			"</dependency>"
 		],
 		"description": "JUnit 5 dependency to run tests from JUnit 3/4"
+	},
+	"Jacoco Maven Plugin": {
+		"prefix": "jacoco-plugin",
+		"description": "Add Maven plugin for JaCoCo Code Coverage Library",
+		"body": [
+			"<plugin>",
+			"\t<groupId>org.jacoco</groupId>",
+			"\t<artifactId>jacoco-maven-plugin</artifactId>",
+			"\t<version>${0:0.8.7}</version>",
+			"\t<executions>",
+			"\t\t<execution>",
+			"\t\t\t<id>jacoco-initialize</id>",
+			"\t\t\t<goals>",
+			"\t\t\t\t<goal>prepare-agent</goal>",
+			"\t\t\t</goals>",
+			"\t\t</execution>",
+			"\t\t<execution>",
+			"\t\t\t<id>jacoco-site</id>",
+			"\t\t\t<phase>test</phase>",
+			"\t\t\t<goals>",
+			"\t\t\t\t<goal>report</goal>",
+			"\t\t\t</goals>",
+			"\t\t</execution>",
+			"\t</executions>",
+			"</plugin>"
+		]
+	},
+	"ArchUnit for JUnit 5": {
+		"prefix": "archunit-junit5-dep",
+		"description": "ArchUnit dependency to run with JUnit 5",
+		"body": [
+			"<dependency>",
+			"\t<groupId>com.tngtech.archunit</groupId>",
+			"\t<artifactId>archunit-junit5</artifactId>",
+			"\t<version>${0:0.19.0}</version>",
+			"\t<scope>test</scope>",
+			"</dependency>"
+		]
+	},
+	"JsonPath - Java DSL to create matchers for JSON": {
+		"prefix": "jsonpath-dep",
+		"description": "JsonPath dependency - Java DSL to create matchers for JSON",
+		"body": [
+			"<dependency>",
+			"\t<groupId>com.jayway.jsonpath</groupId>",
+			"\t<artifactId>json-path</artifactId>",
+			"\t<version>${0:2.6.0}</version>",
+			"\t<scope>test</scope>",
+			"</dependency>"
+		]
 	}
 }
