@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.0] - 2021-07-09
+
+### Added
+
+- Snippets for Maven:
+  - JaCoCo plugin
+  - ArchUnit dependency
+  - JsonPath dependency
+
+### Bugfix
+
+- normalize file path when generating package name (PR #3 from @baincd)
+
 ## [1.3.0] - 2021-04-13
 
 ### Added
