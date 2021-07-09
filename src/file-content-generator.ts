@@ -5,6 +5,8 @@ import { parseJavaClassesFromFile } from './class-parser';
 import { JavaClass } from './types';
 import { ExtensionSettings, getExtensionConfiguration } from './vscode-settings';
 
+const isWindows = process.platform === 'win32';
+
 export async function generateTestClassFileContent(
   javaFileUri: vscode.Uri,
   javaClassName: string,
@@ -57,21 +59,22 @@ export function generateEmptyClassContent(packageName: string, className: string
 
 export function createPackageNameFromUri(uri: vscode.Uri, filename: string | null = null, isTest: boolean = false): string {
   const pathPrefix = isTest ? '/src/test/java' : '/src/main/java';
-  const startIndex = uri.fsPath.indexOf(pathPrefix) + 15; // '/src/test/java/'.length
-  let endIndex = uri.path.length;
+  const posixPath = isWindows ? uri.path.replace(/\\/g,'/') : uri.path;
+  const startIndex = posixPath.indexOf(pathPrefix) + 15; // '/src/test/java/'.length
+  let endIndex = posixPath.length;
 
-  const extension = posix.extname(uri.path);
+  const extension = posix.extname(posixPath);
   if (extension && extension.length > 0) {
     if (!filename || !filename.length) {
-      filename = posix.basename(uri.path);
+      filename = posix.basename(posixPath);
     }
-    endIndex = uri.fsPath.indexOf(filename) - 1;
+    endIndex = posixPath.indexOf(filename) - 1;
     if (startIndex >= endIndex) {
       return '';
     }
   }
 
-  return uri.fsPath.substring(startIndex, endIndex).replace(/\//g, '.');
+  return posixPath.substring(startIndex, endIndex).replace(/\//g, '.');
 }
 
 function createTestClass(javaClass: JavaClass, settings: ExtensionSettings) {
