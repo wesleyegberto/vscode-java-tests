@@ -5,8 +5,6 @@
 
 Extension to help write tests in Java using JUnit 4/5 with Hamcrest and Mockito.
 
-This extension tries to help by:
-
 Features:
 
 * Snippets to add dependencies/plugins of test libs:
