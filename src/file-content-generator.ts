@@ -16,18 +16,12 @@ export async function generateTestClassFileContent(
   const settings = getExtensionConfiguration();
 
   if (settings.junitDefaultVersion === 'alwaysAsk') {
-    const items: Array<vscode.QuickPickItem> = [
-      { label: '4', description: 'JUnit 4' },
-      { label: '5', description: 'JUnit 5' }
-    ];
-    const inputedVersion = await vscode.window.showQuickPick(items);
-    settings.junitDefaultVersion = inputedVersion?.label === '5' ? '5' : '4';
+    settings.junitDefaultVersion = await askForJunitVersion();
   }
 
   const packageDeclaration = generateTestClassPackageDeclaration(testFileUri, testClassName);
 
   const javaClasses = await parseJavaClassesFromFile(javaFileUri);
-  // console.log(javaClasses);
 
   let fileContent = packageDeclaration + createDefaultImports(settings);
 
@@ -77,7 +71,7 @@ export function createPackageNameFromUri(uri: vscode.Uri, filename: string | nul
   return posixPath.substring(startIndex, endIndex).replace(/\//g, '.');
 }
 
-function createTestClass(javaClass: JavaClass, settings: ExtensionSettings) {
+export function createTestClass(javaClass: JavaClass, settings: ExtensionSettings): string {
   const varName = lowercaseFirstLetter(javaClass.className);
 
   let testClassContent = `\n${javaClass.accessModifier}class ${javaClass.className}Test {\n`;
@@ -116,8 +110,12 @@ function createTestClass(javaClass: JavaClass, settings: ExtensionSettings) {
   return testClassContent + '}\n';
 }
 
-function generateTestCaseForEachPublicMethod(settings: ExtensionSettings, javaClass: JavaClass,
-  testClassContent: string, varName: string) {
+function generateTestCaseForEachPublicMethod(
+  settings: ExtensionSettings,
+  javaClass: JavaClass,
+  testClassContent: string,
+  varName: string
+): string {
 
   if (javaClass.publicMethods && javaClass.publicMethods.length) {
     for (const method of javaClass.publicMethods) {
@@ -163,7 +161,11 @@ function generateTestCaseForEachPublicMethod(settings: ExtensionSettings, javaCl
   return testClassContent;
 }
 
-function createDefaultTestClass(javaClassName: string, testClassName: string, settings: ExtensionSettings) {
+function createDefaultTestClass(
+  javaClassName: string,
+  testClassName: string,
+  settings: ExtensionSettings
+): string {
   return `\npublic class ${testClassName} {
 \tprivate ${javaClassName} cut;
 
@@ -179,7 +181,7 @@ function createDefaultTestClass(javaClassName: string, testClassName: string, se
 }`;
 }
 
-function createDefaultImports(settings: ExtensionSettings) {
+function createDefaultImports(settings: ExtensionSettings): string {
   // Junit 5
   if (settings.junitDefaultVersion === '5') {
     return `\n\nimport static org.hamcrest.Matchers.*;
@@ -214,13 +216,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;\n`;
 }
 
-export function getTestFileUri(javaFileUri: vscode.Uri, testClassName: string) {
+export function getTestFileUri(javaFileUri: vscode.Uri, testClassName: string): vscode.Uri {
   const testPath = javaFileUri.path.replace('/src/main/java', '/src/test/java');
   const testFilePath = posix.join(testPath, '..', `${testClassName}.java`);
   return javaFileUri.with({ path: testFilePath });
 }
 
-function generateTestClassPackageDeclaration(testFileUri: vscode.Uri, testClassName: string) {
+function generateTestClassPackageDeclaration(testFileUri: vscode.Uri, testClassName: string): string {
   const packageName = createPackageNameFromUri(testFileUri, testClassName, true);
   if (!packageName.length) {
     return '';
@@ -228,12 +230,21 @@ function generateTestClassPackageDeclaration(testFileUri: vscode.Uri, testClassN
   return `package ${packageName};`;
 }
 
-function generateTargetTestClassPackageImport(javaFileUri: vscode.Uri, javaClassName: string) {
+function generateTargetTestClassPackageImport(javaFileUri: vscode.Uri, javaClassName: string): string {
   const packageName = createPackageNameFromUri(javaFileUri, javaClassName, false);
   if (!packageName.length) {
     return '';
   }
   return `import ${packageName}.${javaClassName};`;
+}
+
+async function askForJunitVersion(): Promise<string> {
+  const items: Array<vscode.QuickPickItem> = [
+    { label: '4', description: 'JUnit 4' },
+    { label: '5', description: 'JUnit 5' }
+  ];
+  const inputedVersion = await vscode.window.showQuickPick(items);
+  return inputedVersion?.label === '5' ? '5' : '4';
 }
 
 function capitalizeFirstLetter(string: string): string {

@@ -4,6 +4,7 @@ export class JavaClass {
   accessModifier: string;
   constructorParameters: Array<Parameter>;
   publicMethods: Array<Method>;
+  fileImports: Array<String> | null = null;
 
   constructor(
     className: string,
@@ -36,7 +37,12 @@ export class Method {
   parameters: Array<Parameter>;
   isStatic: boolean;
 
-  constructor(returnType: string, name: string, parameters: Array<Parameter> | null, isStatic: boolean = false) {
+  constructor(
+    returnType: string,
+    name: string,
+    parameters: Array<Parameter> | null,
+    isStatic: boolean = false
+  ) {
     this.returnType = returnType;
     this.name = name;
     this.parameters = parameters || [];
