@@ -3,8 +3,8 @@
 		"prefix": "junit5-props",
 		"description": "JUnit 5 version properties",
 		"body": [
-			"<junit.jupiter.version>${1:5.7.1}</junit.jupiter.version>",
-			"<junit.platform.version>${2:1.2.0}</junit.platform.version>"
+			"<junit.jupiter.version>${1:5.8.2}</junit.jupiter.version>",
+			"<junit.platform.version>${2:1.8.2}</junit.platform.version>"
 		]
 	},
 	"JUnit5 Deps": {
@@ -23,6 +23,12 @@
 			"\t<scope>test</scope>",
 			"</dependency>",
 			"<dependency>",
+			"\t<groupId>org.junit.jupiter</groupId>",
+			"\t<artifactId>junit-platform-launcher</artifactId>",
+			"\t<version>${junit.platform.version}</version>",
+			"\t<scope>test</scope>",
+			"</dependency>",
+			"<dependency>",
 			"\t<groupId>org.hamcrest</groupId>",
 			"\t<artifactId>hamcrest</artifactId>",
 			"\t<version>${2:2.2}</version>",
@@ -31,7 +37,7 @@
 			"<dependency>",
 			"\t<groupId>org.mockito</groupId>",
 			"\t<artifactId>mockito-junit-jupiter</artifactId>",
-			"\t<version>${3:3.9.0}</version>",
+			"\t<version>${3:4.3.1}</version>",
 			"\t<scope>test</scope>",
 			"</dependency>"
 		],
