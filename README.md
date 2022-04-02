@@ -39,8 +39,12 @@ I also recommend install Microsoft's [Java Test Runner](https://marketplace.visu
 | `imports_junit5` | Insert the imports for JUnit 5 (Mockito, Hamcrast and JUnit) |
 | `test_before` | Create setup method with `@Before` |
 | `test_after` | Create tear down method with `@After` |
-| `test_is` | `assertThat` with `is` |
 | `test_equals` | `assertEquals` |
+| `test_is` | `assertThat` with `is` |
+| `test_null` | `assertThat` with `nullValue` |
+| `test_not_null` | `assertThat` with `notNullValue` |
+| `test_nullorempty` | `assertThat` with `emptyOrNullString` |
+| `test_not_nullorempty` | `assertThat` with `not(emptyOrNullString)` |
 | `test_isOneOf` | `assertThat` with `isOneOf` |
 | `test_hasSize` | `assertThat` with `hasSize` |
 | `test_hasItem` | `assertThat` with `hasItem` |

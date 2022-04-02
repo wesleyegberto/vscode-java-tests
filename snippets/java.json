@@ -36,6 +36,13 @@
 		],
 		"description": "Imports to write tests with JUnit 4, Mockito and Hamcrest"
 	},
+	"Assert - equals": {
+		"prefix": "test_equals",
+		"body": [
+			"assertEquals(${1:anObject}, ${2:anotherObject});"
+		],
+		"description": "assert equals"
+	},
 	"Assert - is": {
 		"prefix": "test_is",
 		"body": [
@@ -43,12 +50,33 @@
 		],
 		"description": "assert that is"
 	},
-	"Assert - equals": {
-		"prefix": "test_equals",
+	"Assert - is null": {
+		"prefix": "test_null",
 		"body": [
-			"assertEquals(${1:anObject}, ${2:anotherObject});"
+			"assertThat(${1:mockedService.executeMagic()}, nullValue());"
 		],
-		"description": "assert equals"
+		"description": "assert that is null"
+	},
+	"Assert - is not null": {
+		"prefix": "test_not_null",
+		"body": [
+			"assertThat(${1:mockedService.executeMagic()}, notNullValue());"
+		],
+		"description": "assert that is not null"
+	},
+	"Assert - string is null or empty": {
+		"prefix": "test_nullorempty",
+		"body": [
+			"assertThat(${1:mockedService.executeMagic()}, emptyOrNullString());"
+		],
+		"description": "assert that a string is null or empty"
+	},
+	"Assert - string is not null and not empty": {
+		"prefix": "test_not_nullorempty",
+		"body": [
+			"assertThat(${1:mockedService.executeMagic()}, not(emptyOrNullString()));"
+		],
+		"description": "assert that string is not null or empty"
 	},
 	"Assert - isOneOf": {
 		"prefix": "test_isOneOf",
