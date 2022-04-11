@@ -10,6 +10,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Snippets to write asertions
 
+### Bugfix
+
+- fixed typo on Mockito snippet `only`
+
 ## [1.4.0] - 2021-07-09
 
 ### Added
