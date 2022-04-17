@@ -8,7 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Added
 
-- Snippets to write asertions
+- Snippets to write assertions
 
 ### Bugfix
 

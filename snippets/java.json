@@ -134,12 +134,26 @@
 		],
 		"description": "Mock a method to throw exception"
 	},
-	"Mockito - Verify call": {
+	"Mockito - Verify call only": {
+		"prefix": "mock_verify_only",
+		"body": [
+			"verify(${1:mockedService}, only()).${2:executeMagic()};"
+		],
+		"description": "Verify if a mocked method was the only one called"
+	},
+	"Mockito - Verify call once": {
+		"prefix": "mock_verify_once",
+		"body": [
+			"verify(${1:mockedService}).${2:executeMagic()};"
+		],
+		"description": "Verify if a mocked method was called only once"
+	},
+	"Mockito - Verify call N times": {
 		"prefix": "mock_verify_times",
 		"body": [
-			"verify(${1:mockedService}, ${2|only(),times(2)|}).${3:executeMagic()};"
+			"verify(${1:mockedService}, times(${2:2})).${3:executeMagic()};"
 		],
-		"description": "Verify if a mocked method was called only once or `n` times"
+		"description": "Verify if a mocked method was called `n` times"
 	},
 	"Mockito - Verify never called": {
 		"prefix": "mock_verify_never",
