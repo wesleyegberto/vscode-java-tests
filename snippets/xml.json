@@ -102,10 +102,6 @@
 			"\t\t\t</goals>",
 			"\t\t</execution>",
 			"\t</executions>",
-			"\t<configuration>",
-			"\t\t<failWhenNoMutations>false</failWhenNoMutations>",
-			"\t\t<timestampedReports>false</timestampedReports>",
-			"\t</configuration>",
 			"</plugin>"
 		]
 	},
@@ -134,6 +130,12 @@
 			"\t\t\t</goals>",
 			"\t\t</execution>",
 			"\t</executions>",
+			"\t<configuration>",
+			"\t\t<failWhenNoMutations>false</failWhenNoMutations>",
+			"\t\t<timestampedReports>false</timestampedReports>",
+			"\t\t<!-- Coverage threshold to pass -->",
+			"\t\t<coverageThreshold>75</coverageThreshold>",
+			"\t</configuration>",
 			"</plugin>"
 		]
 	}
