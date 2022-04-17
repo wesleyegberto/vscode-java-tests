@@ -103,9 +103,9 @@
 			"</plugin>"
 		]
 	},
-	"PiTest Maven Plugin": {
+	"Pitest Maven Plugin": {
 		"prefix": "pitest-plugin",
-		"description": "Add Maven plugin for PiTest",
+		"description": "Add Maven plugin for Pitest",
 		"body": [
 			"<plugin>",
 			"\t<groupId>org.pitest</groupId>",
