@@ -70,9 +70,10 @@ Snippets for Maven.
 | `junit5-props` | JUnit 5 verson properties |
 | `junit5-deps` | JUnit 5 dependencies |
 | `junit5-vintage` | JUnit 5 Vintage dependency to run tests from JUnit 3/4 |
-| `jacoco-plugin` | Maven plugin for JaCoCo Code Coverage Library |
 | `archunit-junit5-dep` | ArchUnit dependency to run with Junit 5 |
 | `jsonpath-dep` | JsonPath dependency to facilitate the creation of matchers for JSON |
+| `jacoco-plugin` | Maven plugin for JaCoCo Code Coverage Library |
+| `pitest-plugin` | Maven plugin for mutation test PiTest |
 
 ## Actions
 

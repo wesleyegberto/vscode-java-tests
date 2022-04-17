@@ -9,6 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Snippets to write assertions
+- Snippet for mutation test PiTest maven plugin
 
 ### Bugfix
 
