@@ -53,6 +53,8 @@ I also recommend install Microsoft's [Java Test Runner](https://marketplace.visu
 | `mock_class` | Create a mock object of a class |
 | `mock_method_return` | Mock a method's return |
 | `mock_method_throw` | Mock a method to throw exception |
+| `mock_verify_only` | Verify if a mocked method was the only one called |
+| `mock_verify_once` | Verify if a mocked method was called only once |
 | `mock_verify_times` | Verify if a mocked method was called `n` times |
 | `mock_verify_never` | Verify if a mocked method was never called |
 | `mock_arg_capture` | Capture an argument given to a mocked method using `ArgumentCaptor` |
