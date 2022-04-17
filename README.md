@@ -9,9 +9,10 @@ Features:
 
 * Snippets to add dependencies/plugins of test libs:
   * JUnit 5 and Vintage
-  * [JaCoCo](https://www.jacoco.org/jacoco/): Code coverage report
   * [JsonPath](https://github.com/json-path/JsonPath): Java DSL to facilitate the creation of JSON matchers
   * [ArchUnit](https://github.com/TNG/ArchUnit): Java DSL to test project architecture
+  * [JaCoCo](https://www.jacoco.org/jacoco/): Code coverage report
+  * [Pitest](https://github.com/hcoles/pitest): Mutation test
 * Snippets to write tests structures, assertione, mocks, so on
 * Generate/open a test class for a given class
 * Generate/open a class using its qualified name (like IntelliJ IDEA)
@@ -73,7 +74,7 @@ Snippets for Maven.
 | `archunit-junit5-dep` | ArchUnit dependency to run with Junit 5 |
 | `jsonpath-dep` | JsonPath dependency to facilitate the creation of matchers for JSON |
 | `jacoco-plugin` | Maven plugin for JaCoCo Code Coverage Library |
-| `pitest-plugin` | Maven plugin for mutation test PiTest |
+| `pitest-plugin` | Maven plugin for mutation test with Pitest |
 
 ## Actions
 
