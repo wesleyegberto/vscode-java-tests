@@ -72,15 +72,15 @@ export function createPackageNameFromUri(uri: vscode.Uri, filename: string | nul
 }
 
 export function createTestClass(javaClass: JavaClass, settings: ExtensionSettings): string {
-  const varName = lowercaseFirstLetter(javaClass.className);
-
-  let testClassContent = `\n${javaClass.accessModifier}class ${javaClass.className}Test {\n`;
+  let testClassContent = generateTargetTestClassImports(javaClass);
 
   if (settings.junitDefaultVersion === '5') {
-    testClassContent = '\n@ExtendWith(MockitoExtension.class)' + testClassContent;
+    testClassContent = testClassContent + '\n@ExtendWith(MockitoExtension.class)\n';
   } else {
-    testClassContent = '\n@RunWith(MockitoJUnitRunner.class)' + testClassContent;
+    testClassContent = testClassContent + '\n@RunWith(MockitoJUnitRunner.class)\n';
   }
+
+  testClassContent = `${testClassContent}${javaClass.accessModifier}class ${javaClass.className}Test {\n`;
 
   let constructorArgs = '';
   if (settings.mockConstrutorParameters) {
@@ -97,6 +97,7 @@ export function createTestClass(javaClass: JavaClass, settings: ExtensionSetting
     }
   }
 
+  const varName = lowercaseFirstLetter(javaClass.className);
   testClassContent += `\n\tprivate ${javaClass.className}${javaClass.classParameters} ${varName};\n
 \t@Before${settings.junitDefaultVersion === '5' ? 'Each' : ''}
 \tpublic void setup() {
@@ -230,12 +231,11 @@ function generateTestClassPackageDeclaration(testFileUri: vscode.Uri, testClassN
   return `package ${packageName};`;
 }
 
-function generateTargetTestClassPackageImport(javaFileUri: vscode.Uri, javaClassName: string): string {
-  const packageName = createPackageNameFromUri(javaFileUri, javaClassName, false);
-  if (!packageName.length) {
+function generateTargetTestClassImports(javaClass: JavaClass): string {
+  if (!javaClass.fileImports || !javaClass.fileImports.length) {
     return '';
   }
-  return `import ${packageName}.${javaClassName};`;
+  return `\n` + (javaClass.fileImports.map(clazz => `import ${clazz};`).join('\n')) + `\n`;
 }
 
 async function askForJunitVersion(): Promise<string> {

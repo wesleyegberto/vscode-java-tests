@@ -5,7 +5,7 @@ import { createTestClass } from '../../file-content-generator';
 import { ExtensionSettings } from '../../vscode-settings';
 
 suite('Class Parser', () => {
-  test('Should generate a empty class', async () => {
+  test('Should generate test for an empty class', async () => {
     const javaClass = new JavaClass(
       'EmptyClass',
       '',
@@ -21,8 +21,64 @@ suite('Class Parser', () => {
       junitDefaultVersion: '5'
     } as ExtensionSettings;
 
-    const testClassFileContent = await createTestClass(javaClass, settings);
+    const testClassFileContent = createTestClass(javaClass, settings);
 
-    assert.strictEqual(testClassFileContent, 'public class EmptyClassTest {}');
+    const expectedTestClassContent = `\n
+@ExtendWith(MockitoExtension.class)
+public class EmptyClassTest {
+\tprivate EmptyClass emptyClass;
+
+\t@BeforeEach
+\tpublic void setup() {
+\t\tthis.emptyClass = new EmptyClass();
+\t}
+\t@Test
+\tpublic void shouldCompile() {
+\t\tassertThat("Actual value", is("Expected value"));
+\t}
+}
+`;
+
+    assert.equal(testClassFileContent.replace(/\s/g, ''), expectedTestClassContent.replace(/\s/g, ''));
   });
+
+  test('Should generate for a class with importing', async () => {
+    const javaClass = new JavaClass(
+      'EmptyClass',
+      '',
+      'public ',
+      [],
+      []
+    );
+    javaClass.fileImports = ['java.util.Random', 'java.util.Map'];
+
+    const settings = {
+      fileOpenLocation: 'beside',
+      mockConstrutorParameters: false,
+      createTestCaseForEachMethod: true,
+      ignoreStaticMethodTestCase: true,
+      junitDefaultVersion: '5'
+    } as ExtensionSettings;
+
+    const testClassFileContent = createTestClass(javaClass, settings);
+
+    const expectedTestClassContent = `import java.util.Random;\nimport java.util.Map;\n
+@ExtendWith(MockitoExtension.class)
+public class EmptyClassTest {
+\tprivate EmptyClass emptyClass;
+
+\t@BeforeEach
+\tpublic void setup() {
+\t\tthis.emptyClass = new EmptyClass();
+\t}
+\t@Test
+\tpublic void shouldCompile() {
+\t\tassertThat("Actual value", is("Expected value"));
+\t}
+}
+`;
+
+    assert.equal(testClassFileContent.replace(/\s/g, ''), expectedTestClassContent.replace(/\s/g, ''));
+  });
+
 });

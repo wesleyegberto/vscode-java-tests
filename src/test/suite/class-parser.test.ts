@@ -119,11 +119,11 @@ suite('Class Parser', () => {
   });
 
   test('Should parse a class with imports', () => {
-    const sourceCode = 'import java.util.List; public class MyCustomList { private List<Object> list; }';
+    const sourceCode = 'import java.util.List;import java.util.Map; public class MyCustomList { private List<Object> list; private Map<String, String> fields; }';
 
     const parsedClass = parseJavaClassesFromSourceCode(sourceCode);
 
-    assertClassStructure(parsedClass, 'MyCustomList', 'public ', [], [], '', ['java.util.List']);
+    assertClassStructure(parsedClass, 'MyCustomList', 'public ', [], [], '', ['java.util.List','java.util.Map']);
   });
 
 });
