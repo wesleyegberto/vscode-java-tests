@@ -158,9 +158,14 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 
+import java.util.logging.Logger;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
 public class ObjectServiceTest {
     @Mock
-    private Logger logger; // won't be imported automatically
+    private Logger logger;
     @Mock
     private ObjectRepository repository;
 
@@ -230,9 +235,9 @@ public class ObjectService {
 - [x] Create option to define if should create a test case for each method
 - [x] Create option to ignore the static methods
 - [x] Generate template for JUnit 5 (imports, tests, checkers)
+- [x] Auto import the types used in arguments to constructor and methods
 - [ ] Snippets for Spring Boot tests (Rest Controller, Repository) - Doing
 - [ ] Remember JUnit version by project
-- [ ] Auto import the types used in arguments to constructor and methods
 - [ ] Command to create the target class in `src/main/java` when doing TDD
 - [ ] Create tests for the extension
 

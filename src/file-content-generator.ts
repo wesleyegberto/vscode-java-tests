@@ -235,7 +235,7 @@ function generateTargetTestClassImports(javaClass: JavaClass): string {
   if (!javaClass.fileImports || !javaClass.fileImports.length) {
     return '';
   }
-  return javaClass.fileImports.map(clazz => `import ${clazz};`).join('\n');
+  return `\n` + (javaClass.fileImports.map(clazz => `import ${clazz};`).join('\n')) + `\n`;
 }
 
 async function askForJunitVersion(): Promise<string> {
