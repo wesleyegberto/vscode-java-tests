@@ -4,7 +4,7 @@ import { JavaClass, Parameter, Method } from '../../types';
 import { createTestClass } from '../../file-content-generator';
 import { ExtensionSettings } from '../../vscode-settings';
 
-suite('Class Parser', () => {
+suite('File Content Generator', () => {
   test('Should generate test for an empty class', async () => {
     const javaClass = new JavaClass(
       'EmptyClass',
