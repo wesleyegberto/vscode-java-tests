@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [1.5.0] - Unreleased
+## [1.5.0] - 2022-04-20
 
 ### Added
 
 - Snippets to write assertions
 - Snippet for mutation test PiTest maven plugin
+- Change to generate the test class file with imports used by the class under testing
 
 ### Bugfix
 
