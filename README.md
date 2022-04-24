@@ -15,7 +15,7 @@ Features:
   * [ArchUnit](https://github.com/TNG/ArchUnit): Java DSL to test project architecture
   * [JaCoCo](https://www.jacoco.org/jacoco/): Code coverage report
   * [Pitest](https://github.com/hcoles/pitest): Mutation test
-* Snippets to write tests structures, assertione, mocks, so on
+* Snippets to write tests structures, assertions, mocks, so on
 * Generate/open a test class for a given class
 * Generate/open a class using its qualified name (like IntelliJ IDEA)
 
@@ -87,7 +87,7 @@ class then it will be opened.
 
 Generate the test class with the following structure:
 
-* The types that are used by Java class is **NOT** imported by default (to be implemented)
+* All the types that are used by target Java class are imported (improvements pending)
 * Define the instance to test using its **first** non-private constructor
 * Define an attribute annotated with `@Mock` for each parameter from the **first** non-private constructor
 * Define a test case for each public method that is not a setter (start with `set` and has only one parameter)
@@ -160,6 +160,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 
+// To be improved: only import the types that are used in the class API
 import java.util.logging.Logger;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -238,6 +239,7 @@ public class ObjectService {
 - [x] Create option to ignore the static methods
 - [x] Generate template for JUnit 5 (imports, tests, checkers)
 - [x] Auto import the types used in arguments to constructor and methods
+  - [ ] Improve to *only* import the types used in arguments to constructor and methods
 - [ ] Snippets for Spring Boot tests (Rest Controller, Repository) - Doing
 - [ ] Remember JUnit version by project
 - [ ] Command to create the target class in `src/main/java` when doing TDD
