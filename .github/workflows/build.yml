@@ -2,12 +2,14 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - '**'
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
-  Build:
+  build:
     name: CI
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -38,3 +40,26 @@ jobs:
 
     - name: Test
       run: DISPLAY=:99 npm test
+
+  publish:
+    name: Publish
+    needs: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: Production
+
+    steps:
+    - name: Publish to Open VSX Registry
+      uses: HaaLeo/publish-vscode-extension@v1
+      id: publishToOpenVSX
+      with:
+        pat: ${{ secrets.OPEN_VSX_TOKEN }}
+
+    - name: Publish to Visual Studio Marketplace
+      uses: HaaLeo/publish-vscode-extension@v1
+      with:
+        pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+        registryUrl: https://marketplace.visualstudio.com
+        # reuse the .vsix built in the previous step
+        extensionFile: ${{ steps.publishToOpenVSX.outputs.vsixPath }}
+
