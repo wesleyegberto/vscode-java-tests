@@ -10,10 +10,11 @@ on:
       - master
 
 jobs:
-  build:
-    name: Build and Test
+  publish:
+    name: Build, Test And Publish
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    environment: Production
 
     steps:
     - uses: actions/checkout@v2
@@ -36,35 +37,11 @@ jobs:
     - name: Compile
       run: npm run compile
 
-    - name: Lint
-      run: npm run lint
-
-    - name: Test
-      run: DISPLAY=:99 npm test
-
-  publish:
-    name: Publish
-    needs: Build
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    environment: Production
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v2
-      with:
-        node-version: 12
-
-    - name: Install Node.js modules
-      run: npm ci
-
     - name: Publish to Open VSX Registry
-      uses: HaaLeo/publish-vscode-extension@v1
+      uses: haaleo/publish-vscode-extension@v1
       id: publishToOpenVSX
+      env:
+        DISPLAY: ':99'
       with:
         pat: ${{ secrets.OPEN_VSX_TOKEN }}
 
