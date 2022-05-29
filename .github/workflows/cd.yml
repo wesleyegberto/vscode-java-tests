@@ -54,6 +54,14 @@ jobs:
       with:
         fetch-depth: 0
 
+   - name: Setup Node.js environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: 12
+
+    - name: Install Node.js modules
+      run: npm ci
+
     - name: Publish to Open VSX Registry
       uses: HaaLeo/publish-vscode-extension@v1
       id: publishToOpenVSX
