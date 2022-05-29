@@ -1,14 +1,16 @@
-name: CI
+name: CI Pipeline
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - '**'
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
-  Build:
-    name: CI
+  build:
+    name: Build and Test
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -38,3 +40,4 @@ jobs:
 
     - name: Test
       run: DISPLAY=:99 npm test
+

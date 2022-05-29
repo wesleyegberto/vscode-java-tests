@@ -1,0 +1,53 @@
+name: CD Pipeline
+
+on:
+  push:
+    tag:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+    ref: master
+
+jobs:
+  publish:
+    name: Build, Test And Publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: Production
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Build Environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libxkbfile-dev pkg-config libsecret-1-dev libxss1 dbus xvfb libgtk-3-0 libgbm1
+        sudo /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        sleep 3
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: 12
+
+    - name: Install Node.js modules
+      run: npm ci
+
+    - name: Compile
+      run: npm run compile
+
+    - name: Publish to Open VSX Registry
+      uses: haaleo/publish-vscode-extension@v1
+      id: publishToOpenVSX
+      env:
+        DISPLAY: ':99'
+      with:
+        pat: ${{ secrets.OPEN_VSX_TOKEN }}
+
+    - name: Publish to Visual Studio Marketplace
+      uses: HaaLeo/publish-vscode-extension@v1
+      with:
+        pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+        registryUrl: https://marketplace.visualstudio.com
+        # reuse the .vsix built in the previous step
+        extensionFile: ${{ steps.publishToOpenVSX.outputs.vsixPath }}
+
