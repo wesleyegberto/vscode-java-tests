@@ -4,7 +4,7 @@
 	"icon": "images/icon-128.png",
 	"displayName": "Java Tests",
 	"description": "Extension to help write tests in Java.",
-	"version": "1.5.0",
+	"version": "1.5.1",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/wesleyegberto/vscode-java-tests.git"

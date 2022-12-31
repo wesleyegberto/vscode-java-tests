@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.5.1] -
+
+### Added
+
+- Autoimport classe `Assertions`
+
 ## [1.5.0] - 2022-04-20
 
 ### Added
