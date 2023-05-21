@@ -7,7 +7,7 @@
 			"<junit.platform.version>${2:1.8.2}</junit.platform.version>"
 		]
 	},
-	"JUnit5 Deps": {
+	"JUnit5 - Mvn Deps": {
 		"prefix": "junit5-deps",
 		"body": [
 			"<dependency>",
@@ -41,9 +41,9 @@
 			"\t<scope>test</scope>",
 			"</dependency>"
 		],
-		"description": "JUnit 5 dependencies"
+		"description": "JUnit 5 Maven dependencies"
 	},
-	"JUnit 5 Vintage": {
+	"JUnit 5 Vintage - Mvn Deps": {
 		"prefix": "junit5-vintage",
 		"body": [
 			"<dependency>",
@@ -53,11 +53,11 @@
 			"\t<scope>test</scope>",
 			"</dependency>"
 		],
-		"description": "JUnit 5 dependency to run tests from JUnit 3/4"
+		"description": "JUnit 5 Maven dependency to run tests from JUnit 3/4"
 	},
-	"ArchUnit for JUnit 5": {
+	"ArchUnit for JUnit 5 - Mvn Deps": {
 		"prefix": "archunit-junit5-dep",
-		"description": "ArchUnit dependency to run with JUnit 5",
+		"description": "ArchUnit Maven dependency to run with JUnit 5",
 		"body": [
 			"<dependency>",
 			"\t<groupId>com.tngtech.archunit</groupId>",
@@ -67,9 +67,9 @@
 			"</dependency>"
 		]
 	},
-	"JsonPath - Java DSL to create matchers for JSON": {
+	"JsonPath - Java DSL to create matchers for JSON - Mvn Deps": {
 		"prefix": "jsonpath-dep",
-		"description": "JsonPath dependency - Java DSL to create matchers for JSON",
+		"description": "JsonPath Maven dependency - Java DSL to create matchers for JSON",
 		"body": [
 			"<dependency>",
 			"\t<groupId>com.jayway.jsonpath</groupId>",
@@ -137,6 +137,40 @@
 			"\t\t<coverageThreshold>75</coverageThreshold>",
 			"\t</configuration>",
 			"</plugin>"
+		]
+	},
+	"Testcontainers - Mvn Deps": {
+		"prefix": "testcontainers-dep",
+		"description": "Testcontainer Maven dependencies",
+		"body": [
+			"<dependency>",
+			"\t<groupId>org.testcontainers</groupId>",
+			"\t<artifactId>testcontainers</artifactId>",
+			"\t<-- remove if using Testcontainers dependency management -->",
+			"\t<version>${0:1.18.1}</version>",
+			"\t<scope>test</scope>",
+			"</dependency>",
+			"<dependency>",
+			"\t<groupId>org.testcontainers</groupId>",
+			"\t<artifactId>junit-jupiter</artifactId>",
+			"\t<version>${0:1.18.1}</version>",
+			"\t<scope>test</scope>",
+			"</dependency>"
+		]
+	},
+	"Testcontainers - Mvn Dep Management": {
+		"prefix": "testcontainers-dep-management",
+		"description": "Testcontainers Maven dependecy management",
+		"body": [
+			"<dependencies>",
+			"\t<dependency>",
+			"\t\t<groupId>org.testcontainers</groupId>",
+			"\t\t<artifactId>testcontainers-bom</artifactId>",
+			"\t\t<version>${0:1.18.1}</version>",
+			"\t\t<type>pom</type>",
+			"\t\t<scope>import</scope>",
+			"\t</dependency>",
+			"</dependencies>",
 		]
 	}
 }

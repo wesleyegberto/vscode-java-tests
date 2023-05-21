@@ -15,6 +15,7 @@ Features:
   * [ArchUnit](https://github.com/TNG/ArchUnit): Java DSL to test project architecture
   * [JaCoCo](https://www.jacoco.org/jacoco/): Code coverage report
   * [Pitest](https://github.com/hcoles/pitest): Mutation test
+  * [Testcontainers](https://www.testcontainers.org/)
 * Snippets to write tests structures, assertions, mocks, so on
 * Generate/open a test class for a given class
 * Generate/open a class using its qualified name (like IntelliJ IDEA)
@@ -77,6 +78,8 @@ Snippets for Maven.
 | `jsonpath-dep` | JsonPath dependency to facilitate the creation of matchers for JSON |
 | `jacoco-plugin` | Maven plugin for JaCoCo Code Coverage Library |
 | `pitest-plugin` | Maven plugin for mutation test with Pitest |
+| `testcontainers-dep` | Testcontainer dependencies |
+| `testcontainers-dep-management` | Testcontainers Maven dependecy management |
 
 ## Actions
 

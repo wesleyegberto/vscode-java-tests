@@ -9,6 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Autoimport classe `Assertions`
+- Snippets to add Testcontainers dependencies
 
 ## [1.5.0] - 2022-04-20
 
