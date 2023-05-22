@@ -10,6 +10,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Autoimport classe `Assertions`
 - Snippets to add Testcontainers dependencies
+- Snippets to add Surefire and Failsafe dependencies
 
 ## [1.5.0] - 2022-04-20
 

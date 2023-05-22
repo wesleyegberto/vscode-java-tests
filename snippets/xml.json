@@ -55,6 +55,36 @@
 		],
 		"description": "JUnit 5 Maven dependency to run tests from JUnit 3/4"
 	},
+	"Surefire - Mvn Deps": {
+		"prefix": "surefire-dep",
+		"description": "Surefire Maven dependency",
+		"body": [
+			"<dependency>",
+			"\t<groupId>org.apache.maven.plugins</groupId>",
+			"\t<artifactId>maven-surefire-plugin</artifactId>",
+			"</dependency>"
+		]
+	},
+	"Failsafe - Mvn Deps": {
+		"prefix": "failsafe-dep",
+		"description": "Failsafe Maven dependency",
+		"body": [
+			"<dependency>",
+			"\t<groupId>org.apache.maven.plugins</groupId>",
+			"\t<artifactId>maven-failsafe-plugin</artifactId>",
+			"\t<version>${0:3.1.0}</version>",
+			"\t<executions>",
+			"\t\t<execution>",
+			"\t\t\t<phase>integration-test</phase>",
+			"\t\t\t<goals>",
+			"\t\t\t\t<goal>integration-test</goal>",
+			"\t\t\t\t<goal>verify</goal>",
+			"\t\t\t</goals>",
+			"\t\t</execution>",
+			"\t</executions>",
+			"</dependency>"
+		]
+	},
 	"ArchUnit for JUnit 5 - Mvn Deps": {
 		"prefix": "archunit-junit5-dep",
 		"description": "ArchUnit Maven dependency to run with JUnit 5",
@@ -112,13 +142,13 @@
 			"<plugin>",
 			"\t<groupId>org.pitest</groupId>",
 			"\t<artifactId>pitest-maven</artifactId>",
-			"\t<version>1.7.5</version>",
+			"\t<version>1.14.0</version>",
 			"\t<dependencies>",
 			"\t\t<!-- JUnit 5 plugin (remove if using JUnit 4) -->",
 			"\t\t<dependency>",
 			"\t\t\t<groupId>org.pitest</groupId>",
 			"\t\t\t<artifactId>pitest-junit5-plugin</artifactId>",
-			"\t\t\t<version>0.14</version>",
+			"\t\t\t<version>1.2.0</version>",
 			"\t\t</dependency>",
 			"\t</dependencies>",
 			"\t<executions>",
