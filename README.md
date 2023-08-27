@@ -1,9 +1,7 @@
 # VSCode Java Tests
 
-[![](https://vsmarketplacebadge.apphb.com/version/wesleyegberto.vscode-java-tests.svg)](https://marketplace.visualstudio.com/items?itemName=wesleyegberto.vscode-java-tests)
-[![](https://vsmarketplacebadge.apphb.com/installs-short/wesleyegberto.vscode-java-tests.svg)](https://marketplace.visualstudio.com/items?itemName=wesleyegberto.vscode-java-tests)
-[![github-badge]][github]
 [![github-license-badge]][github-license]
+[![github-badge]][github]
 
 Extension to help write tests in Java using JUnit 4/5 with Hamcrest and Mockito.
 
@@ -258,5 +256,5 @@ public class ObjectService {
 [github-license]: https://github.com/wesleyegberto/vscode-java-tests/blob/master/LICENSE
 [github-license-badge]: https://img.shields.io/github/license/wesleyegberto/vscode-java-tests.svg?style=flat "License"
 [github]: https://github.com/wesleyegberto/vscode-java-tests/actions?query=branch%3Amaster
-[github-badge]: https://github.com/wesleyegberto/vscode-java-tests/actions/workflows/build.yml/badge.svg?branch=master
+[github-badge]: https://github.com/wesleyegberto/vscode-java-tests/actions/workflows/ci.yml/badge.svg?branch=master
 [github-history-badge]: https://buildstats.info/github/chart/wesleyegberto/vscode-java-tests?includeBuildsFromPullRequest=false "GitHub Actions History"
