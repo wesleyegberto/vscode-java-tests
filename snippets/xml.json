@@ -161,10 +161,13 @@
 			"\t\t</execution>",
 			"\t</executions>",
 			"\t<configuration>",
+			"\t\t<verbose>false</verbose>",
 			"\t\t<failWhenNoMutations>false</failWhenNoMutations>",
 			"\t\t<timestampedReports>false</timestampedReports>",
 			"\t\t<!-- Coverage threshold to pass -->",
 			"\t\t<coverageThreshold>75</coverageThreshold>",
+			"\t\t<!-- Skip integration test classes -->",
+			"\t\t<excludedTestClasses>com.test.**.*IT</excludedTestClasses>",
 			"\t</configuration>",
 			"</plugin>"
 		]
