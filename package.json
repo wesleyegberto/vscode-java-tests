@@ -103,6 +103,10 @@
 				"path": "./snippets/java.json"
 			},
 			{
+				"language": "java",
+				"path": "./snippets/spring-boot.json"
+			},
+			{
 				"language": "xml",
 				"path": "./snippets/xml.json"
 			}

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.6.0] - 2024-07-XX
+
+### Added
+
+- Snippets to test controller using Spring Context with `MockMVC`
+- Snippets to test controller using Spring Webserver with `TestRestTemplate`
+
 ## [1.5.1] - 2023-08-26
 
 ### Added

@@ -63,6 +63,22 @@ I also recommend install Microsoft's [Java Test Runner](https://marketplace.visu
 | `test_exception` | Assertion to verify if an exception was thrown (only JUnit 5) |
 | `test_parameterized` | Create a parameterized test (only JUnit 5) |
 
+#### Spring Boot
+
+| Prefix | Description |
+| - | - |
+| `spring-ctrl-mockmvc-annotations` | Annotations to test controller with only Spring Context |
+| `spring-ctrl-mockmvc-fields` | Declare fields with testing tools (`MockMvc`, `JacksonTester<T>`) |
+| `spring-ctrl-mockmvc-get` | Test GET Request using `MockMVC` |
+| `spring-ctrl-mockmvc-post` | Test POST request using `MockMVC` |
+| `spring-ctrl-mockmvc-put` | Test PUT request using `MockMVC` |
+| `spring-ctrl-mockmvc-delete` | Test DELETE Request using `MockMVC` |
+| `spring-ctrl-testresttemplate-annotations` | Annotations to test controller with complete webserver |
+| `spring-ctrl-testresttemplate-fields` | Declare field with `TestRestTemplate` |
+| `spring-ctrl-testresttemplate-get` | Test GET Request using `TestRestTemplate` |
+| `spring-ctrl-testresttemplate-post` | Test POST request using `TestRestTemplate` |
+| `spring-ctrl-testresttemplate-delete` | Test Delete Request using `TestRestTemplate` |
+
 #### POM.xml
 
 Snippets for Maven.

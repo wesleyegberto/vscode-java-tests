@@ -1,0 +1,131 @@
+{
+	"Spring MockMVC - Annotations": {
+		"prefix": "spring-ctrl-mockmvc-annotations",
+		"body": [
+			"@AutoConfigureJsonTesters",
+			"@WebMvcTest(${1:MyController}.class)",
+		],
+		"description": "Annotations to test controller with only Spring Context"
+	},
+	"Spring MockMVC - Fields": {
+		"prefix": "spring-ctrl-mockmvc-fields",
+		"body": [
+			"@MockBean\nprivate MyService service",
+			"\t@Autowired\nprivate MockMvc mvc",
+			"\t@Autowired\nprivate JacksonTester<${1:ModelDto}> json"
+		],
+		"description": "Declare fields with testing tools (MockMvc, JacksonTester<T>)"
+	},
+	"Spring MockMVC - Get": {
+		"prefix": "spring-ctrl-mockmvc-get",
+		"body": [
+			"MockHttpServletResponse response = mvc.perform(",
+			"\t\t\t\tMockMvcRequestBuilders.get(\"${1:/api/models/42}\").accept(MediaType.APPLICATION_JSON)",
+			"\t\t)",
+			"\t\t.andReturn()",
+			"\t\t.getResponse();\n"
+			"assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());"
+			"assertThat(response.getContentAsString())";
+			"\t\t.isEqualTo(",
+			"\t\t\t\tjson.write(${2:new ModelDto(\"Universe\", 42)}).getJson()",
+			"\t\t);"
+		],
+		"description": "Test GET Request using MockMVC"
+	},
+	"Spring MockMVC - Post": {
+		"prefix": "spring-ctrl-mockmvc-post",
+		"body": [
+			"MockHttpServletResponse response = mvc.perform(",
+			"\t\t\t\tMockMvcRequestBuilders.post(\"${1:/api/models}\")",
+			"\t\t\t\t\t\t.contentType(MediaType.APPLICATION_JSON)",
+			"\t\t\t\t\t\t.content(",
+			"\t\t\t\t\t\t\t\tjson.write(${2:new ModelDto(\"Universe\", 42)}).getJson()",
+			"\t\t\t\t\t\t)",
+			"\t\t)",
+			"\t\t.andReturn()",
+			"\t\t.getResponse();\n"
+			"assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());"
+			"assertThat(response.getHeaders(\"Location\")).containsOnly(\"/api/models/1\");",
+			"assertThat(response.getContentAsString())";
+			"\t\t.isEqualTo(",
+			"\t\t\t\tjson.write(${3:new ModelDto(1, \"Universe\", 42)}).getJson()",
+			"\t\t);"
+		],
+		"description": "Test POST request using MockMVC"
+	},
+	"Spring MockMVC - Put": {
+		"prefix": "spring-ctrl-mockmvc-put",
+		"body": [
+			"MockHttpServletResponse response = mvc.perform(",
+			"\t\t\t\tMockMvcRequestBuilders.put(\"${1:/api/models/1}\")",
+			"\t\t\t\t\t\t.contentType(MediaType.APPLICATION_JSON)",
+			"\t\t\t\t\t\t.content(",
+			"\t\t\t\t\t\t\t\tjson.write(${2:new ModelDto(\"Universe\", 42)}).getJson()",
+			"\t\t\t\t\t\t)",
+			"\t\t)",
+			"\t\t.andReturn()",
+			"\t\t.getResponse();\n"
+			"assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());"
+			"assertThat(response.getContentAsString())";
+			"\t\t.isEqualTo(",
+			"\t\t\t\tjson.write(${3:new ModelDto(1, \"Universe\", 42)}).getJson()",
+			"\t\t);"
+		],
+		"description": "Test PUT request using MockMVC"
+	},
+	"Spring MockMVC - Delete": {
+		"prefix": "spring-ctrl-mockmvc-delete",
+		"body": [
+			"MockHttpServletResponse response = mvc.perform(",
+			"\t\t\t\tMockMvcRequestBuilders.delete(\"${1:/api/models/42}\")",
+			"\t\t)",
+			"\t\t.andReturn()",
+			"\t\t.getResponse();\n"
+			"assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());"
+		],
+		"description": "Test DELETE Request using MockMVC"
+	},
+	"Spring TestRestTemplate - Annotations": {
+		"prefix": "spring-ctrl-testresttemplate-annotations",
+		"body": [
+			"@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)"
+		],
+		"description": "Annotations to test controller with complete webserver"
+	},
+	"Spring TestRestTemplate - Fields": {
+		"prefix": "spring-ctrl-testresttemplate-fields",
+		"body": [
+			"@MockBean\nprivate MyService service",
+			"\t@Autowired\nprivate TestRestTemplate restTemplate"
+		],
+		"description": "Declare field with TestRestTemplate"
+	},
+	"Spring TestRestTemplate - Get": {
+		"prefix": "spring-ctrl-testresttemplate-get",
+		"body": [
+			"ResponseEntity<Pet> response = restTemplate.getForEntity(\"${1:/api/models/42}\", ${2:ModelDto}.class);",
+			"assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);",
+			"assertThat(response.getBody().equals(${3:new ModelDto(1, \"Universe\", 42)}));"
+		],
+		"description": "Test GET Request using TestRestTemplate"
+	},
+	"Spring TestRestTemplate - Post": {
+		"prefix": "spring-ctrl-testresttemplate-post",
+		"body": [
+			"ResponseEntity<Pet> response = restTemplate.postForEntity(\"${1:/api/models}\", ${2:new RequestDto(\"Universe\", 42)}, ${3:ModelDto}.class);",
+			"assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);",
+			"assertThat(response.getHeaders().get(\"Location\")).containsOnly(\"${4:/api/models/1}\");",
+			"assertThat(response.getBody().equals(${5:new ResquestDto(1, \"Universe\", 42)}));"
+		],
+		"description": "Test POST request using TestRestTemplate"
+	},
+	"Spring TestRestTemplate - Delete": {
+		"prefix": "spring-ctrl-testresttemplate-delete",
+		"body": [
+			"ResponseEntity<Pet> response = restTemplate.getForEntity(\"${1:/api/models/42}\", ${2:ModelDto}.class);",
+			"assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);",
+			"assertThat(response.getBody().equals(${3:new ModelDto(1, \"Universe\", 42)}));"
+		],
+		"description": "Test Delete Request using TestRestTemplate"
+	},
+}
