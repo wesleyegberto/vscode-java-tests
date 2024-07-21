@@ -2,12 +2,13 @@ import * as vscode from 'vscode';
 import { posix } from 'path';
 
 import { parseJavaClassesFromFile } from './class-parser';
-import { JavaClass } from './types';
+import { JavaClass, JavaComponentType } from './types';
 import { ExtensionSettings, getExtensionConfiguration } from './vscode-settings';
 
 const isWindows = process.platform === 'win32';
 
 export async function generateTestClassFileContent(
+  javaComponentType: JavaComponentType,
   javaFileUri: vscode.Uri,
   javaClassName: string,
   testFileUri: vscode.Uri,
@@ -23,7 +24,7 @@ export async function generateTestClassFileContent(
 
   const javaClasses = await parseJavaClassesFromFile(javaFileUri);
 
-  let fileContent = packageDeclaration + createDefaultImports(settings);
+  let fileContent = packageDeclaration + createDefaultImports(javaComponentType, settings);
 
   if (javaClasses && javaClasses.length > 0) {
     // find (or set) a public class (required by JUnit)
@@ -32,6 +33,7 @@ export async function generateTestClassFileContent(
       publicClass = javaClasses[0];
       publicClass.accessModifier = 'public ';
     }
+    publicClass.componentType = javaComponentType;
 
     fileContent += createTestClass(publicClass, settings);
 
@@ -53,7 +55,7 @@ export function generateEmptyClassContent(packageName: string, className: string
 
 export function createPackageNameFromUri(uri: vscode.Uri, filename: string | null = null, isTest: boolean = false): string {
   const pathPrefix = isTest ? '/src/test/java' : '/src/main/java';
-  const posixPath = isWindows ? uri.path.replace(/\\/g,'/') : uri.path;
+  const posixPath = isWindows ? uri.path.replace(/\\/g, '/') : uri.path;
   const startIndex = posixPath.indexOf(pathPrefix) + 15; // '/src/test/java/'.length
   let endIndex = posixPath.length;
 
@@ -74,10 +76,16 @@ export function createPackageNameFromUri(uri: vscode.Uri, filename: string | nul
 export function createTestClass(javaClass: JavaClass, settings: ExtensionSettings): string {
   let testClassContent = generateTargetTestClassImports(javaClass);
 
-  if (settings.junitDefaultVersion === '5') {
-    testClassContent = testClassContent + '\n@ExtendWith(MockitoExtension.class)\n';
-  } else {
-    testClassContent = testClassContent + '\n@RunWith(MockitoJUnitRunner.class)\n';
+  switch (javaClass.componentType) {
+    case JavaComponentType.CONTROLLER:
+      testClassContent = testClassContent + '\n@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)\n';
+      break;
+    case JavaComponentType.SIMPLE:
+      if (settings.junitDefaultVersion === '5') {
+        testClassContent = testClassContent + '\n@ExtendWith(MockitoExtension.class)\n';
+      } else {
+        testClassContent = testClassContent + '\n@RunWith(MockitoJUnitRunner.class)\n';
+      }
   }
 
   testClassContent = `${testClassContent}${javaClass.accessModifier}class ${javaClass.className}Test {\n`;
@@ -85,6 +93,8 @@ export function createTestClass(javaClass: JavaClass, settings: ExtensionSetting
   let constructorArgs = '';
   if (settings.mockConstrutorParameters) {
     if (javaClass.constructorParameters && javaClass.constructorParameters.length > 0) {
+      const mockAnnotation = javaClass.componentType == JavaComponentType.CONTROLLER ? '@MockBean' : '@Mock';
+
       for (const param of javaClass.constructorParameters) {
         const attributeName = lowercaseFirstLetter(param.name);
         if (constructorArgs.length) {
@@ -92,20 +102,28 @@ export function createTestClass(javaClass: JavaClass, settings: ExtensionSetting
         } else {
           constructorArgs = attributeName;
         }
-        testClassContent += `\t@Mock\n\tprivate ${param.type} ${attributeName};\n`;
+        testClassContent += `\t${mockAnnotation}\n\tprivate ${param.type} ${attributeName};\n`;
       }
     }
   }
 
-  const varName = lowercaseFirstLetter(javaClass.className);
-  testClassContent += `\n\tprivate ${javaClass.className}${javaClass.classParameters} ${varName};\n
-\t@Before${settings.junitDefaultVersion === '5' ? 'Each' : ''}
-\tpublic void setup() {
-\t\tthis.${varName} = new ${javaClass.className}${javaClass.classParameters}(${constructorArgs});
-\t}\n`;
+  switch (javaClass.componentType) {
+    case JavaComponentType.CONTROLLER:
+      testClassContent += `\t@Autowired\n\tprivate TestRestTemplate restTemplate;\n`;
+      break;
 
-  if (settings.createTestCaseForEachMethod) {
-    testClassContent = generateTestCaseForEachPublicMethod(settings, javaClass, testClassContent, varName);
+    case JavaComponentType.SIMPLE:
+      const varName = lowercaseFirstLetter(javaClass.className);
+      testClassContent += `\n\tprivate ${javaClass.className}${javaClass.classParameters} ${varName};\n
+                           \t@Before${settings.junitDefaultVersion === '5' ? 'Each' : ''}
+                           \tpublic void setup() {
+                           \t\tthis.${varName} = new ${javaClass.className}${javaClass.classParameters}(${constructorArgs});
+                           \t}\n`;
+
+      if (settings.createTestCaseForEachMethod) {
+        testClassContent = generateTestCaseForEachPublicMethod(settings, javaClass, testClassContent, varName);
+      }
+      break;
   }
 
   return testClassContent + '}\n';
@@ -170,7 +188,7 @@ function createDefaultTestClass(
   return `\npublic class ${testClassName} {
 \tprivate ${javaClassName} cut;
 
-\t@Before${settings.junitDefaultVersion === '5' ? 'Each': ''}
+\t@Before${settings.junitDefaultVersion === '5' ? 'Each' : ''}
 \tpublic void setup() {
 \t\tthis.cut = new ${javaClassName}();
 \t}
@@ -182,7 +200,22 @@ function createDefaultTestClass(
 }`;
 }
 
-function createDefaultImports(settings: ExtensionSettings): string {
+function createDefaultImports(javaComponentType: JavaComponentType, settings: ExtensionSettings): string {
+  let customImports = '';
+  switch (javaComponentType) {
+    case JavaComponentType.CONTROLLER:
+      customImports = `
+                      import org.springframework.beans.factory.annotation.Autowired;
+                      import org.springframework.boot.test.context.SpringBootTest;
+                      import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+                      import org.springframework.boot.test.mock.mockito.MockBean;
+                      import org.springframework.boot.test.web.client.TestRestTemplate;
+                      import org.springframework.http.HttpStatus;
+                      import org.springframework.http.ResponseEntity;
+                      `;
+      break;
+  }
+
   // Junit 5
   if (settings.junitDefaultVersion === '5') {
     return `\n\nimport static org.hamcrest.Matchers.*;
@@ -200,7 +233,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.Mock;\n`;
+import org.mockito.Mock;\n${customImports}`;
   }
 
   // JUnit 4
@@ -215,7 +248,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;\n`;
+import org.mockito.junit.MockitoJUnitRunner;
+${customImports}`;
 }
 
 export function getTestFileUri(javaFileUri: vscode.Uri, testClassName: string): vscode.Uri {

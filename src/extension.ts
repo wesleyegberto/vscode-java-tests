@@ -3,11 +3,13 @@ import { posix } from 'path';
 
 import { generateTestClassFileContent, generateEmptyClassContent, getTestFileUri, createPackageNameFromUri } from './file-content-generator';
 import { JavaTestsSettingsKeys, readConfigurationValue } from './vscode-settings';
+import { JavaComponentType } from './types';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('java.tests.createNewClass', createNewClass),
-    vscode.commands.registerCommand('java.tests.createTestClass', createTestClass)
+    vscode.commands.registerCommand('java.tests.createTestClass', createTestClass),
+    vscode.commands.registerCommand('java.tests.createControllerTestClass', createControllerTestClass)
   );
 }
 
@@ -62,6 +64,14 @@ async function createNewClass(args: any) {
 }
 
 async function createTestClass(args: any) {
+  return createTestClassForComponent(JavaComponentType.SIMPLE, args);
+}
+
+async function createControllerTestClass(args: any) {
+  return createTestClassForComponent(JavaComponentType.CONTROLLER, args);
+}
+
+async function createTestClassForComponent(classType: JavaComponentType, args: any) {
   let javaFileUri: vscode.Uri;
 
   if (args && args.scheme === 'file' && args.path) {
@@ -91,7 +101,7 @@ async function createTestClass(args: any) {
   try {
     await vscode.workspace.fs.stat(testFileUri);
   } catch {
-    const fileContent = await generateTestClassFileContent(javaFileUri, javaClassName, testFileUri, testClassName);
+    const fileContent = await generateTestClassFileContent(classType, javaFileUri, javaClassName, testFileUri, testClassName);
     await vscode.workspace.fs.writeFile(testFileUri, fileContent);
   }
   showTestFile(testFileUri);
@@ -103,3 +113,4 @@ function showTestFile(testFileUri: vscode.Uri) {
     viewColumn: configOpenLocationValue === 'beside' ? vscode.ViewColumn.Beside : vscode.ViewColumn.Active
   });
 }
+

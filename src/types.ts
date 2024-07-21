@@ -1,4 +1,5 @@
 export class JavaClass {
+  componentType: JavaComponentType = JavaComponentType.SIMPLE;
   className: string;
   classParameters: string;
   accessModifier: string;
@@ -49,3 +50,9 @@ export class Method {
     this.isStatic = isStatic;
   }
 }
+
+export enum JavaComponentType {
+  SIMPLE = 'SIMPLE',
+  CONTROLLER = 'CONTROLLER',
+}
+
