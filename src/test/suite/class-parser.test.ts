@@ -3,13 +3,15 @@ import * as assert from 'assert';
 import { parseJavaClassesFromSourceCode } from '../../class-parser';
 import { JavaClass, Parameter, Method } from '../../types';
 
+const PUBLIC = 'public ';
+
 suite('Class Parser', () => {
   test('should parse a empty class with public visibility', () => {
       const sourceCode = 'public class EmptyClass {}';
 
       const parsedClasses = parseJavaClassesFromSourceCode(sourceCode);
 
-      assertClassStructure(parsedClasses, 'EmptyClass', 'public ');
+      assertClassStructure(parsedClasses, 'EmptyClass', PUBLIC);
   });
 
   test('Should parse a empty class with package visibility', () => {
@@ -25,7 +27,7 @@ suite('Class Parser', () => {
 
     const parsedClass = parseJavaClassesFromSourceCode(sourceCode);
 
-    assertClassStructure(parsedClass, 'SingleConstructor', 'public ');
+    assertClassStructure(parsedClass, 'SingleConstructor', PUBLIC);
   });
 
   test('Should parse a class with an one-arg constructor', () => {
@@ -33,7 +35,7 @@ suite('Class Parser', () => {
 
     const parsedClass = parseJavaClassesFromSourceCode(sourceCode);
 
-    assertClassStructure(parsedClass, 'SingleConstructor', 'public ', [new Parameter('int', 'param')]);
+    assertClassStructure(parsedClass, 'SingleConstructor', PUBLIC, [new Parameter('int', 'param')]);
   });
 
   test('Should parse a class with two-arg constructor', () => {
@@ -41,7 +43,7 @@ suite('Class Parser', () => {
 
     const parsedClass = parseJavaClassesFromSourceCode(sourceCode);
 
-    assertClassStructure(parsedClass, 'SingleConstructor', 'public ', [
+    assertClassStructure(parsedClass, 'SingleConstructor', PUBLIC, [
       new Parameter('int', 'param'),
       new Parameter('String', 'anotherParam')
     ]);
@@ -52,7 +54,7 @@ suite('Class Parser', () => {
 
     const parsedClass = parseJavaClassesFromSourceCode(sourceCode);
 
-    assertClassStructure(parsedClass, 'PrivateConstructor', 'public ');
+    assertClassStructure(parsedClass, 'PrivateConstructor', PUBLIC);
   });
 
   test('Should parse a classe with one no-arg method', () => {
@@ -60,7 +62,7 @@ suite('Class Parser', () => {
 
     const parsedClass = parseJavaClassesFromSourceCode(sourceCode);
 
-    assertClassStructure(parsedClass, 'NoArgMethod', 'public ', [], [
+    assertClassStructure(parsedClass, 'NoArgMethod', PUBLIC, [], [
       new Method('void', 'noArgMethod', null)
     ]);
   });
@@ -70,7 +72,7 @@ suite('Class Parser', () => {
 
     const parsedClass = parseJavaClassesFromSourceCode(sourceCode);
 
-    assertClassStructure(parsedClass, 'OneArgMethod', 'public ', [], [
+    assertClassStructure(parsedClass, 'OneArgMethod', PUBLIC, [], [
       new Method('void', 'oneArgMethod', [ new Parameter('int', 'param') ])
     ]);
   });
@@ -80,7 +82,7 @@ suite('Class Parser', () => {
 
     const parsedClass = parseJavaClassesFromSourceCode(sourceCode);
 
-    assertClassStructure(parsedClass, 'TwoArgMethod', 'public ', [], [
+    assertClassStructure(parsedClass, 'TwoArgMethod', PUBLIC, [], [
       new Method('void', 'twoArgMethod', [
         new Parameter('int', 'param'),
         new Parameter('List<String>', 'params')
@@ -93,7 +95,7 @@ suite('Class Parser', () => {
 
     const parsedClass = parseJavaClassesFromSourceCode(sourceCode);
 
-    assertClassStructure(parsedClass, 'SimpleClass', 'public ', [], [
+    assertClassStructure(parsedClass, 'SimpleClass', PUBLIC, [], [
       new Method('void', 'aMethod', null)
     ]);
   });
@@ -103,7 +105,7 @@ suite('Class Parser', () => {
 
     const parsedClass = parseJavaClassesFromSourceCode(sourceCode);
 
-    assertClassStructure(parsedClass, 'SimpleClass', 'public ', [
+    assertClassStructure(parsedClass, 'SimpleClass', PUBLIC, [
       new Parameter('int', 'param')
     ], [
       new Method('void', 'aMethod', [ new Parameter('int', 'param') ])
@@ -115,7 +117,7 @@ suite('Class Parser', () => {
 
     const parsedClass = parseJavaClassesFromSourceCode(sourceCode);
 
-    assertClassStructure(parsedClass, 'TypedClass', 'public ', [], [], '<T>');
+    assertClassStructure(parsedClass, 'TypedClass', PUBLIC, [], [], '<T>');
   });
 
   test('Should parse a class with imports', () => {
@@ -123,9 +125,8 @@ suite('Class Parser', () => {
 
     const parsedClass = parseJavaClassesFromSourceCode(sourceCode);
 
-    assertClassStructure(parsedClass, 'MyCustomList', 'public ', [], [], '', ['java.util.List','java.util.Map']);
+    assertClassStructure(parsedClass, 'MyCustomList', PUBLIC, [], [], '', ['java.util.List','java.util.Map']);
   });
-
 });
 
 function assertClassStructure(

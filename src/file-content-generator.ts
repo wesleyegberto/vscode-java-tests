@@ -93,7 +93,7 @@ export function createTestClass(javaClass: JavaClass, settings: ExtensionSetting
   let constructorArgs = '';
   if (settings.mockConstrutorParameters) {
     if (javaClass.constructorParameters && javaClass.constructorParameters.length > 0) {
-      const mockAnnotation = javaClass.componentType == JavaComponentType.CONTROLLER ? '@MockBean' : '@Mock';
+      const mockAnnotation = javaClass.componentType === JavaComponentType.CONTROLLER ? '@MockBean' : '@Mock';
 
       for (const param of javaClass.constructorParameters) {
         const attributeName = lowercaseFirstLetter(param.name);
