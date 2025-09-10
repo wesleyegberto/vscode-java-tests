@@ -67,19 +67,26 @@ I also recommend install Microsoft's [Java Test Runner](https://marketplace.visu
 
 Snippets for Maven.
 
+##### Dependencies
+
 | Prefix | Description |
 | - | - |
 | `junit5-props` | JUnit 5 verson properties |
 | `junit5-deps` | JUnit 5 dependencies |
 | `junit5-vintage` | JUnit 5 Vintage dependency to run tests from JUnit 3/4 |
-| `surefire-dep` | Surefire Maven dependency |
-| `failsafe-dep` | Failsafe Maven dependency |
 | `archunit-junit5-dep` | ArchUnit dependency to run with Junit 5 |
 | `jsonpath-dep` | JsonPath dependency to facilitate the creation of matchers for JSON |
-| `jacoco-plugin` | Maven plugin for JaCoCo Code Coverage Library |
-| `pitest-plugin` | Maven plugin for mutation test with Pitest |
 | `testcontainers-dep` | Testcontainer dependencies |
 | `testcontainers-dep-management` | Testcontainers Maven dependecy management |
+
+##### Plugins
+
+| Prefix | Description |
+| - | - |
+| `plugin-surefire` | Surefire |
+| `plugin-failsafe` | Failsafe |
+| `plugin-jacoco` | JaCoCo Code Coverage Library |
+| `plugin-pitest` | Mutation test with Pitest |
 
 ## Actions
 

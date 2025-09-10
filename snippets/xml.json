@@ -55,21 +55,21 @@
 		],
 		"description": "JUnit 5 Maven dependency to run tests from JUnit 3/4"
 	},
-	"Surefire - Mvn Deps": {
-		"prefix": "surefire-dep",
-		"description": "Surefire Maven dependency",
+	"Surefire - Mvn Plugin": {
+		"prefix": "plugin-surefire",
+		"description": "Surefire Maven Plugin",
 		"body": [
-			"<dependency>",
+			"<plugin>",
 			"\t<groupId>org.apache.maven.plugins</groupId>",
 			"\t<artifactId>maven-surefire-plugin</artifactId>",
-			"</dependency>"
+			"</plugin>"
 		]
 	},
-	"Failsafe - Mvn Deps": {
-		"prefix": "failsafe-dep",
-		"description": "Failsafe Maven dependency",
+	"Failsafe - Mvn Plugin": {
+		"prefix": "plugin-failsafe",
+		"description": "Failsafe Maven Plugin",
 		"body": [
-			"<dependency>",
+			"<plugin>",
 			"\t<groupId>org.apache.maven.plugins</groupId>",
 			"\t<artifactId>maven-failsafe-plugin</artifactId>",
 			"\t<version>${0:3.1.0}</version>",
@@ -82,7 +82,7 @@
 			"\t\t\t</goals>",
 			"\t\t</execution>",
 			"\t</executions>",
-			"</dependency>"
+			"</plugin>"
 		]
 	},
 	"ArchUnit for JUnit 5 - Mvn Deps": {
@@ -110,7 +110,7 @@
 		]
 	},
 	"Jacoco Maven Plugin": {
-		"prefix": "jacoco-plugin",
+		"prefix": "plugin-jacoco",
 		"description": "Add Maven plugin for JaCoCo Code Coverage Library",
 		"body": [
 			"<plugin>",
@@ -136,7 +136,7 @@
 		]
 	},
 	"Pitest Maven Plugin": {
-		"prefix": "pitest-plugin",
+		"prefix": "plugin-pitest",
 		"description": "Add Maven plugin for Pitest",
 		"body": [
 			"<plugin>",
