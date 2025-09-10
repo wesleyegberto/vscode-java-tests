@@ -1,4 +1,4 @@
-name: CD Pipeline
+name: CD Pipeline - Open VSX Registry
 
 on:
   push:
@@ -42,12 +42,3 @@ jobs:
         DISPLAY: ':99'
       with:
         pat: ${{ secrets.OPEN_VSX_TOKEN }}
-
-    - name: Publish to Visual Studio Marketplace
-      uses: HaaLeo/publish-vscode-extension@v1
-      with:
-        pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
-        registryUrl: https://marketplace.visualstudio.com
-        # reuse the .vsix built in the previous step
-        extensionFile: ${{ steps.publishToOpenVSX.outputs.vsixPath }}
-
