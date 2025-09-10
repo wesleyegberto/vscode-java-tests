@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.5.2] - 2025-09-10
+
+- fixes for Maven plugins snippets
+
 ## [1.5.1] - 2023-08-26
 
 ### Added
