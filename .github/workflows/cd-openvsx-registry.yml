@@ -36,8 +36,7 @@ jobs:
       run: npm run compile
 
     - name: Publish to Open VSX Registry
-      uses: haaleo/publish-vscode-extension@v1
-      id: publishToOpenVSX
+      uses: haaleo/publish-vscode-extension@v2
       env:
         DISPLAY: ':99'
       with:
