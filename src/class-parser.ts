@@ -95,7 +95,7 @@ function buildJavaClassDefinition(
         memberDeclaration.fieldDeclaration()!
           .variableDeclarators()
           .variableDeclarator()
-          .forEach(field => classFieldsNames.push(field.variableDeclaratorId().identifier().text));
+          .forEach(field => classFieldsNames.push(field.variableDeclaratorId().IDENTIFIER().text));
       }
       */
 
@@ -124,7 +124,7 @@ function buildJavaClassDefinition(
           classMethods.push(
             new Method(
               method.typeTypeOrVoid().text,
-              method.identifier().text,
+              method.IDENTIFIER().text,
               methodParameters,
               hasStaticAccessModifier(classBody.modifier())
             )
@@ -136,7 +136,7 @@ function buildJavaClassDefinition(
     });
 
   return new JavaClass(
-    classDeclaration.identifier().text,
+    classDeclaration.IDENTIFIER().text,
     classDeclaration.typeParameters()?.text,
     accessModifier,
     classDependencies,
@@ -147,7 +147,7 @@ function buildJavaClassDefinition(
 // TODO: improve to check the parameters and fields
 function isSetter(method: MethodDeclarationContext, methodParameters: Parameter[] | null) {
   return (
-    method.identifier().text.startsWith('set') &&
+    method.IDENTIFIER().text.startsWith('set') &&
     methodParameters &&
     methodParameters.length === 1 &&
     method.typeTypeOrVoid().VOID()
@@ -184,7 +184,7 @@ function extractParameters(formalParameters: FormalParametersContext): Array<Par
 
     return constructorParams
       .formalParameter()
-      .map(p => new Parameter(p.typeType().text, p.variableDeclaratorId().identifier().text));
+      .map(p => new Parameter(p.typeType().text, p.variableDeclaratorId().IDENTIFIER().text));
   } catch (error) {
     console.error('Error to extract parameters from ', formalParameters.text, ':', error);
     return null;
